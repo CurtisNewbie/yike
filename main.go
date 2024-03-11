@@ -28,7 +28,11 @@ func main() {
 		print(">>> ")
 		for {
 			for {
-				line, _ := term.ReadLine()
+				line, err := term.ReadLine()
+				if err != nil {
+					println("\nbye")
+					return
+				}
 				if line == "exit" {
 					println("bye")
 					return

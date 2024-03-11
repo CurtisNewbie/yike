@@ -74,7 +74,8 @@ func (v *vm) Lex(lval *yySymType) int {
 }
 
 func (v *vm) Error(s string) {
-	panic(fmt.Sprintf("%v - %v, %#v", s, v.offset, v))
+	es := fmt.Sprintf("'%v' - %v\n    %v\n    %v^", s, v.offset, v.script, strings.Repeat(" ", v.offset-1))
+	panic(es)
 }
 
 func (v *vm) next() (rune, bool) {
