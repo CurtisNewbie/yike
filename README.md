@@ -18,6 +18,7 @@ Supports:
     - `print('yo') // this prints yo`
 - walk fields recursively using `.FIELD` syntax.
 
+*Sadly, this language interprets code on the fly, it won't go very far without generating an AST. But it's still a good way to learn :D*
 
 ```
 >>> yikes v0.0.1 https://github.com/curtisnewbie/yikes
