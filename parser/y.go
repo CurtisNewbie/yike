@@ -18,15 +18,14 @@ const Number = 57347
 const Print = 57348
 const Label = 57349
 const Type = 57350
-const Comment = 57351
-const Get = 57352
-const Put = 57353
-const Post = 57354
-const Delete = 57355
-const Head = 57356
-const Header = 57357
-const Body = 57358
-const Json = 57359
+const Get = 57351
+const Put = 57352
+const Post = 57353
+const Delete = 57354
+const Head = 57355
+const Header = 57356
+const Body = 57357
+const Json = 57358
 
 var yyToknames = [...]string{
 	"$end",
@@ -37,7 +36,6 @@ var yyToknames = [...]string{
 	"Print",
 	"Label",
 	"Type",
-	"Comment",
 	"Get",
 	"Put",
 	"Post",
@@ -51,7 +49,6 @@ var yyToknames = [...]string{
 	"'-'",
 	"'*'",
 	"'/'",
-	"' '",
 	"'('",
 	"')'",
 	"'.'",
@@ -68,14 +65,12 @@ var yyExca = [...]int8{
 	-1, 1,
 	1, -1,
 	-2, 0,
-	-1, 5,
-	1, 11,
-	9, 11,
-	-2, 34,
-	-1, 9,
-	1, 8,
-	9, 8,
-	-2, 35,
+	-1, 4,
+	1, 9,
+	-2, 32,
+	-1, 8,
+	1, 6,
+	-2, 33,
 }
 
 const yyPrivate = 57344
@@ -83,89 +78,89 @@ const yyPrivate = 57344
 const yyLast = 105
 
 var yyAct = [...]int8{
-	40, 70, 11, 58, 14, 51, 52, 59, 47, 85,
-	24, 15, 16, 17, 18, 19, 84, 23, 68, 24,
-	67, 23, 22, 10, 23, 39, 48, 37, 49, 24,
-	23, 83, 53, 55, 56, 57, 61, 62, 63, 64,
-	69, 66, 27, 28, 29, 30, 38, 36, 20, 50,
-	41, 65, 25, 15, 16, 17, 18, 19, 29, 30,
-	43, 71, 60, 74, 75, 76, 77, 72, 80, 21,
-	81, 45, 82, 20, 12, 5, 13, 4, 15, 16,
-	17, 18, 19, 43, 78, 44, 20, 79, 54, 26,
-	73, 35, 34, 33, 32, 31, 42, 9, 46, 8,
-	7, 6, 3, 2, 1,
+	38, 68, 10, 56, 13, 83, 23, 57, 22, 49,
+	50, 23, 45, 81, 14, 15, 16, 17, 18, 9,
+	82, 22, 66, 23, 37, 67, 35, 47, 46, 65,
+	22, 51, 53, 54, 55, 59, 60, 61, 62, 21,
+	64, 36, 63, 24, 48, 79, 22, 26, 27, 28,
+	29, 28, 29, 69, 58, 20, 19, 41, 52, 43,
+	42, 72, 73, 74, 75, 70, 78, 25, 20, 19,
+	80, 39, 71, 14, 15, 16, 17, 18, 34, 33,
+	41, 20, 19, 11, 4, 12, 14, 15, 16, 17,
+	18, 76, 32, 31, 77, 30, 40, 8, 44, 7,
+	6, 5, 3, 2, 1,
 }
 
 var yyPact = [...]int16{
-	68, 60, -1000, -1000, -1000, 4, -1000, -1000, -1000, -1000,
-	-1000, 3, 28, 82, 23, 91, 90, 89, 88, 87,
-	-1000, -1000, 43, 78, 64, 1, -1000, 81, 81, 81,
-	81, 47, 47, 47, 47, 47, -1000, 23, -1000, 3,
-	-1000, -2, -1000, 27, -1000, -1000, 16, -5, -1000, -7,
-	15, -1000, -1000, 37, -1000, 37, -1000, -1000, 45, 47,
-	86, 45, 45, 45, 45, 80, -1000, -1000, -1000, -1000,
-	-1000, 66, -1000, -1000, -1000, -1000, -1000, -1000, 6, -9,
-	-16, -1000, -1000, -1000, -1000, -1000,
+	77, -1000, -1000, -1000, 22, -1000, -1000, -1000, -1000, -1000,
+	-13, 21, 60, 29, 91, 89, 88, 75, 74, -1000,
+	-1000, 64, 53, 52, 5, -1000, 51, 51, 51, 51,
+	40, 40, 40, 40, 40, 29, -1000, -13, -1000, -16,
+	-1000, 20, -1000, -1000, 17, 6, -1000, -1, 2, -1000,
+	-1000, 31, -1000, 31, -1000, -1000, 38, 40, 68, 38,
+	38, 38, 38, 87, -1000, -1000, -1000, -1000, -1000, 41,
+	-1000, -1000, -1000, -1000, -1000, -1000, -10, -3, -18, -1000,
+	-1000, -1000, -1000, -1000,
 }
 
 var yyPgo = [...]int8{
-	0, 104, 103, 102, 101, 100, 99, 96, 23, 2,
+	0, 104, 103, 102, 101, 100, 99, 96, 19, 2,
 	98, 0, 4, 7, 3, 1,
 }
 
 var yyR1 = [...]int8{
-	0, 1, 1, 1, 1, 3, 3, 3, 3, 3,
-	3, 5, 10, 10, 4, 4, 4, 4, 4, 6,
-	11, 11, 11, 2, 2, 2, 2, 2, 2, 7,
-	7, 7, 7, 12, 12, 12, 13, 14, 14, 14,
-	15, 15, 15, 8, 8, 8, 8, 8, 9, 9,
+	0, 1, 1, 3, 3, 3, 3, 3, 3, 5,
+	10, 10, 4, 4, 4, 4, 4, 6, 11, 11,
+	11, 2, 2, 2, 2, 2, 7, 7, 7, 7,
+	12, 12, 12, 12, 13, 14, 14, 14, 15, 15,
+	15, 8, 8, 8, 8, 8, 9, 9,
 }
 
 var yyR2 = [...]int8{
-	0, 1, 1, 1, 2, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 4, 4, 3, 4, 4, 2,
-	4, 4, 4, 3, 3, 2, 3, 3, 3, 3,
-	3, 3, 3, 1, 1, 1, 2, 1, 0, 2,
-	0, 2, 2, 4, 4, 4, 4, 4, 3, 3,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 4, 4, 3, 4, 4, 2, 4, 4,
+	4, 3, 2, 3, 3, 3, 3, 3, 3, 3,
+	1, 1, 1, 1, 2, 1, 0, 2, 0, 2,
+	2, 4, 4, 4, 4, 4, 3, 3,
 }
 
 var yyChk = [...]int16{
-	-1000, -1, -2, -3, 9, 7, -4, -5, -6, -7,
-	-8, -9, 6, 8, -12, 10, 11, 12, 13, 14,
-	5, 9, 18, 26, 26, 24, 7, 19, 20, 21,
-	22, 4, 4, 4, 4, 4, 4, -12, -8, -9,
-	-11, 7, -7, 17, 7, 7, -10, 7, 25, -9,
-	-8, 4, 5, -12, 7, -12, -12, -12, -14, -13,
-	15, -14, -14, -14, -14, 24, 25, 25, 25, 25,
-	-15, 16, -13, 4, -15, -15, -15, -15, 4, 7,
-	-9, 4, -11, 25, 25, 25,
+	-1000, -1, -2, -3, 7, -4, -5, -6, -7, -8,
+	-9, 6, 8, -12, 9, 10, 11, 12, 13, 5,
+	4, 17, 24, 24, 22, 7, 18, 19, 20, 21,
+	4, 4, 4, 4, 4, -12, -8, -9, -11, 7,
+	-7, 16, 7, 7, -10, 7, 23, -9, -8, 4,
+	5, -12, 7, -12, -12, -12, -14, -13, 14, -14,
+	-14, -14, -14, 22, 23, 23, 23, 23, -15, 15,
+	-13, 4, -15, -15, -15, -15, 4, 7, -9, 4,
+	-11, 23, 23, 23,
 }
 
 var yyDef = [...]int8{
-	0, -2, 1, 2, 3, -2, 5, 6, 7, -2,
-	9, 10, 0, 0, 0, 0, 0, 0, 0, 0,
-	33, 4, 25, 0, 0, 0, 19, 0, 0, 0,
-	0, 38, 38, 38, 38, 38, 23, 24, 26, 27,
-	28, 34, 35, 0, 48, 49, 0, 0, 16, 0,
-	0, 12, 13, 29, 34, 30, 31, 32, 40, 37,
-	0, 40, 40, 40, 40, 0, 14, 15, 17, 18,
-	43, 0, 39, 36, 44, 45, 46, 47, 0, 0,
-	0, 41, 42, 20, 21, 22,
+	0, -2, 1, 2, -2, 3, 4, 5, -2, 7,
+	8, 0, 0, 0, 0, 0, 0, 0, 0, 30,
+	31, 22, 0, 0, 0, 17, 0, 0, 0, 0,
+	36, 36, 36, 36, 36, 21, 23, 24, 25, 32,
+	33, 0, 46, 47, 0, 0, 14, 0, 0, 10,
+	11, 26, 32, 27, 28, 29, 38, 35, 0, 38,
+	38, 38, 38, 0, 12, 13, 15, 16, 41, 0,
+	37, 34, 42, 43, 44, 45, 0, 0, 0, 39,
+	40, 18, 19, 20,
 }
 
 var yyTok1 = [...]int8{
 	1, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 23, 3, 3, 3, 3, 3, 3, 3,
-	24, 25, 21, 19, 3, 20, 26, 22, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 18,
+	22, 23, 20, 18, 3, 19, 24, 21, 3, 3,
+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 17,
 }
 
 var yyTok2 = [...]int8{
 	2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-	12, 13, 14, 15, 16, 17,
+	12, 13, 14, 15, 16,
 }
 
 var yyTok3 = [...]int8{
@@ -509,214 +504,214 @@ yydefault:
 	// dummy call; replaced with literal code
 	switch yynt {
 
-	case 11:
+	case 9:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parser.y:43
+//line parser.y:39
 		{
 			PrintYySymDebug(yyDollar[1])
 		}
+	case 12:
+		yyDollar = yyS[yypt-4 : yypt+1]
+//line parser.y:45
+		{
+			PrintYySym(yyDollar[3])
+		}
+	case 13:
+		yyDollar = yyS[yypt-4 : yypt+1]
+//line parser.y:46
+		{
+			PrintGlobalYySym(yyDollar[3])
+		}
 	case 14:
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line parser.y:47
+		{
+			println("")
+		}
+	case 15:
+		yyDollar = yyS[yypt-4 : yypt+1]
+//line parser.y:48
+		{
+			PrintYySym(yyDollar[3])
+		}
+	case 16:
 		yyDollar = yyS[yypt-4 : yypt+1]
 //line parser.y:49
 		{
 			PrintYySym(yyDollar[3])
 		}
-	case 15:
-		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:50
-		{
-			PrintGlobalYySym(yyDollar[3])
-		}
-	case 16:
-		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:51
-		{
-			println("")
-		}
 	case 17:
-		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:52
-		{
-			PrintYySym(yyDollar[3])
-		}
-	case 18:
-		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:53
-		{
-			PrintYySym(yyDollar[3])
-		}
-	case 19:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parser.y:56
+//line parser.y:52
 		{
 			PrintType(yyDollar[2])
 		}
+	case 18:
+		yyDollar = yyS[yypt-4 : yypt+1]
+//line parser.y:55
+		{
+			yyVAL = yySymType{val: StrToMap(yyDollar[3].val)}
+		}
+	case 19:
+		yyDollar = yyS[yypt-4 : yypt+1]
+//line parser.y:56
+		{
+			yyVAL = yySymType{val: StrToMap(GlobalVarRead(yyDollar[3]))}
+		}
 	case 20:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:59
+//line parser.y:57
 		{
 			yyVAL = yySymType{val: StrToMap(yyDollar[3].val)}
 		}
 	case 21:
-		yyDollar = yyS[yypt-4 : yypt+1]
+		yyDollar = yyS[yypt-3 : yypt+1]
 //line parser.y:60
 		{
-			yyVAL = yySymType{val: StrToMap(GlobalVarRead(yyDollar[3]))}
+			GlobalVarWrite(yyDollar[1], yyDollar[3].val)
 		}
 	case 22:
-		yyDollar = yyS[yypt-4 : yypt+1]
+		yyDollar = yyS[yypt-2 : yypt+1]
 //line parser.y:61
 		{
-			yyVAL = yySymType{val: StrToMap(yyDollar[3].val)}
+			SyntaxError()
 		}
 	case 23:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:64
+//line parser.y:62
 		{
 			GlobalVarWrite(yyDollar[1], yyDollar[3].val)
 		}
 	case 24:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:65
+//line parser.y:63
 		{
 			GlobalVarWrite(yyDollar[1], yyDollar[3].val)
 		}
 	case 25:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line parser.y:66
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line parser.y:64
 		{
-			SyntaxError()
+			GlobalVarWrite(yyDollar[1], yyDollar[3].val)
 		}
 	case 26:
 		yyDollar = yyS[yypt-3 : yypt+1]
 //line parser.y:67
 		{
-			GlobalVarWrite(yyDollar[1], yyDollar[3].val)
+			yyVAL = yySymType{val: ValAdd(yyDollar[1].val, yyDollar[3].val)}
 		}
 	case 27:
 		yyDollar = yyS[yypt-3 : yypt+1]
 //line parser.y:68
 		{
-			GlobalVarWrite(yyDollar[1], yyDollar[3].val)
+			yyVAL = yySymType{val: ValMinus(yyDollar[1].val, yyDollar[3].val)}
 		}
 	case 28:
 		yyDollar = yyS[yypt-3 : yypt+1]
 //line parser.y:69
 		{
-			GlobalVarWrite(yyDollar[1], yyDollar[3].val)
+			yyVAL = yySymType{val: ValMul(yyDollar[1].val, yyDollar[3].val)}
 		}
 	case 29:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:72
-		{
-			yyVAL = yySymType{val: ValAdd(yyDollar[1].val, yyDollar[3].val)}
-		}
-	case 30:
-		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:73
-		{
-			yyVAL = yySymType{val: ValMinus(yyDollar[1].val, yyDollar[3].val)}
-		}
-	case 31:
-		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:74
-		{
-			yyVAL = yySymType{val: ValMul(yyDollar[1].val, yyDollar[3].val)}
-		}
-	case 32:
-		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:75
+//line parser.y:70
 		{
 			yyVAL = yySymType{val: ValDiv(yyDollar[1].val, yyDollar[3].val)}
 		}
+	case 30:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parser.y:73
+		{
+			yyVAL = yyDollar[1]
+		}
+	case 31:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parser.y:74
+		{
+			yyVAL = yyDollar[1]
+		}
+	case 32:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line parser.y:75
+		{
+			yyVAL = yySymType{val: GlobalVarRead(yyDollar[1])}
+		}
 	case 33:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parser.y:78
+//line parser.y:76
 		{
 			yyVAL = yyDollar[1]
 		}
 	case 34:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parser.y:79
-		{
-			yyVAL = yySymType{val: GlobalVarRead(yyDollar[1])}
-		}
-	case 35:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line parser.y:80
-		{
-			yyVAL = yyDollar[1]
-		}
-	case 36:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line parser.y:83
+//line parser.y:79
 		{
 			yyVAL = yyDollar[2]
 		}
-	case 37:
+	case 35:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line parser.y:86
+//line parser.y:82
 		{
 			yyVAL = yyDollar[1]
+		}
+	case 37:
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line parser.y:84
+		{
+			yyVAL = joinHeaders(yyDollar[1], yyDollar[2])
 		}
 	case 39:
 		yyDollar = yyS[yypt-2 : yypt+1]
 //line parser.y:88
 		{
-			yyVAL = joinHeaders(yyDollar[1], yyDollar[2])
+			yyVAL = yySymType{val: yyDollar[2].val}
+		}
+	case 40:
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line parser.y:89
+		{
+			yyVAL = yySymType{val: yyDollar[2].val}
 		}
 	case 41:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line parser.y:92
-		{
-			yyVAL = yySymType{val: yyDollar[2].val}
-		}
-	case 42:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line parser.y:93
-		{
-			yyVAL = yySymType{val: yyDollar[2].val}
-		}
-	case 43:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:96
+//line parser.y:92
 		{
 			yyVAL = HttpSend("GET", yyDollar[2].val.(string), yyDollar[3], yyDollar[4])
 		}
-	case 44:
+	case 42:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:97
+//line parser.y:93
 		{
 			yyVAL = HttpSend("PUT", yyDollar[2].val.(string), yyDollar[3], yyDollar[4])
 		}
-	case 45:
+	case 43:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:98
+//line parser.y:94
 		{
 			yyVAL = HttpSend("POST", yyDollar[2].val.(string), yyDollar[3], yyDollar[4])
 		}
-	case 46:
+	case 44:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:99
+//line parser.y:95
 		{
 			yyVAL = HttpSend("DELETE", yyDollar[2].val.(string), yyDollar[3], yyDollar[4])
 		}
-	case 47:
+	case 45:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line parser.y:100
+//line parser.y:96
 		{
 			yyVAL = HttpSend("HEAD", yyDollar[2].val.(string), yyDollar[3], yyDollar[4])
 		}
-	case 48:
+	case 46:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:103
+//line parser.y:99
 		{
 			v := GlobalVarRead(yyDollar[1])
 			yyVAL = yySymType{val: WalkField(v, yyDollar[3].val)}
 		}
-	case 49:
+	case 47:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:107
+//line parser.y:103
 		{
 			yyVAL = yySymType{val: WalkField(yyDollar[1].val, yyDollar[3].val)}
 		}

@@ -51,7 +51,7 @@ func (v *vm) Lex(lval *yySymType) int {
 			case c == '/' && v.lookAheadIs(1, '/'):
 				gap := len(v.script) - v.offset
 				v.move(gap)
-				return Comment
+				return int(gap)
 			case c == '-':
 				if v.lookAheadIs(1, 'h') { // -h
 					v.move(2)

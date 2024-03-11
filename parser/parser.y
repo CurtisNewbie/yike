@@ -12,14 +12,12 @@ package parser
 %token Print
 %token Label
 %token Type
-%token Comment
 %token Get Put Post Delete Head
 %token Header Body Json
 
-%left '='
+%right '='
 %left '+' '-'
 %left '*' '/'
-%left Header ' '
 
 %start expression
 
@@ -28,8 +26,6 @@ package parser
 expression:
     assignment
     | statement
-    | Comment
-    | expression Comment
 
 statement:
     print_st
@@ -61,8 +57,7 @@ json_st:
     | Json '(' field_st ')' { $$ = yySymType{ val: StrToMap($3.val) } }
 
 assignment:
-    Label '=' String { GlobalVarWrite($1, $3.val) }
-    | Label '=' eval_expr { GlobalVarWrite($1, $3.val) }
+    Label '=' eval_expr { GlobalVarWrite($1, $3.val) }
     | Label '=' { SyntaxError() }
     | Label '=' network_st { GlobalVarWrite($1, $3.val) }
     | Label '=' field_st { GlobalVarWrite($1, $3.val) }
@@ -76,7 +71,8 @@ arith_st:
 
 eval_expr:
     Number { $$ = $1 }
-    | Label { $$ = yySymType { val: GlobalVarRead($1) } }
+    | String { $$ = $1 }
+    | Label { $$ = yySymType{ val: GlobalVarRead($1) } }
     | arith_st { $$ = $1 }
 
 header_sg:

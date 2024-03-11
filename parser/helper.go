@@ -22,6 +22,8 @@ func ValAdd(a any, b any) any {
 
 	if ta.Kind() == reflect.Float64 || tb.Kind() == reflect.Float64 {
 		return cast.ToFloat64(a) + cast.ToFloat64(b)
+	} else if ta.Kind() == reflect.String || tb.Kind() == reflect.String {
+		return cast.ToString(a) + cast.ToString(b)
 	} else {
 		return a.(int64) + b.(int64)
 	}
