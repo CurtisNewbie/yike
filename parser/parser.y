@@ -15,6 +15,7 @@ package parser
 %token Get Put Post Delete Head
 %token Header Body Json
 %token Comment
+%token Bool
 
 %right '='
 %left '+' '-'
@@ -51,7 +52,7 @@ print_st:
     | Print '(' network_st ')' { PrintYySym($3) }
 
 type_st:
-    Type Label { PrintType($2) }
+    Type '(' Label ')' { PrintType($3) }
 
 json_st:
     Json '(' String ')' { $$ = yySymType{ val: StrToMap($3.val) } }
@@ -76,6 +77,7 @@ eval_expr:
     | String { $$ = $1 }
     | Label { $$ = yySymType{ val: GlobalVarRead($1) } }
     | arith_st { $$ = $1 }
+    | Bool { $$ = $1 }
 
 header_sg:
     Header String { $$ = $2 }

@@ -9,18 +9,25 @@ import (
 	"github.com/spf13/cast"
 )
 
+type KwTableInf struct {
+	Type     int
+	Callback func(lval *yySymType)
+}
+
 var (
 	vmrt = newVm()
 
-	kwTable = map[string]int{
-		"print":  Print,
-		"type":   Type,
-		"json":   Json,
-		"GET":    Get,
-		"PUT":    Put,
-		"POST":   Post,
-		"HEAD":   Head,
-		"DELETE": Delete,
+	kwTable = map[string]KwTableInf{
+		"print":  {Type: Print},
+		"type":   {Type: Type},
+		"json":   {Type: Json},
+		"GET":    {Type: Get},
+		"PUT":    {Type: Put},
+		"POST":   {Type: Post},
+		"HEAD":   {Type: Head},
+		"DELETE": {Type: Delete},
+		"true":   {Type: Bool, Callback: func(lval *yySymType) { lval.val = true }},
+		"false":  {Type: Bool, Callback: func(lval *yySymType) { lval.val = false }},
 	}
 )
 
@@ -190,8 +197,8 @@ func (v *vm) parseKeywords(lval *yySymType) (int, bool) {
 	return 0, false
 }
 
-func (v *vm) parseKeyword(lval *yySymType, keyword string, keywordType int) (int, bool) {
-	Debugf("parseKeyword, %v, %v", keyword, keywordType)
+func (v *vm) parseKeyword(lval *yySymType, keyword string, inf KwTableInf) (int, bool) {
+	Debugf("parseKeyword, %v, %v", keyword, inf.Type)
 
 	kwl := len(keyword)
 	if v.offset+kwl > len(v.script) {
@@ -201,8 +208,11 @@ func (v *vm) parseKeyword(lval *yySymType, keyword string, keywordType int) (int
 	pre := v.script[v.offset : v.offset+kwl]
 	Debugf("pre: %v", pre)
 	if pre == keyword {
+		if inf.Callback != nil {
+			inf.Callback(lval)
+		}
 		v.move(kwl)
-		return keywordType, true
+		return inf.Type, true
 	}
 	return 0, false
 }

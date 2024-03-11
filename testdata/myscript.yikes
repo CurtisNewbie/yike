@@ -24,3 +24,10 @@ print(j.abc.jpg)
 j = json('{ "abc": "{\"jpg\": \"yo\"}" }')
 j = json(j.abc)
 print(j.jpg)
+
+a = true
+print(a)
+type(a)
+a = false
+print(a)
+type(a)
