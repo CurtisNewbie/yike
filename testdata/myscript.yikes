@@ -1,0 +1,26 @@
+// a = 1 + 2 * 3
+// print(a) // this should be 7
+// a
+// print()
+
+// b = 1 * 2 + 3
+// print(b) // this should be 5
+// print()
+
+// res = GET 'http://localhost:80' -h 'myapp:yoyooy' -h 'myapp2:nonono' -d json('{ "abc": "abc" }')
+// res
+// print(res.code)
+
+// GET 'http://localhost:8080' -h 'myapp:yoyooy' -h 'myapp2:nonono' -d '{ abc }'
+// PUT 'http://localhost:8080'
+// POST 'http://localhost:8080'
+// HEAD 'http://localhost:8080'
+// DELETE 'http://localhost:8080'
+
+j = json('{ "abc": {"jpg": "yo"} }')
+j
+print(j.abc.jpg)
+
+j = json('{ "abc": "{\"jpg\": \"yo\"}" }')
+j = json(j.abc)
+print(j.jpg)
