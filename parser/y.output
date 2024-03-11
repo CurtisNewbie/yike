@@ -418,13 +418,13 @@ state 43
 state 44
 	field_st:  Label '.' Label.    (48)
 
-	.  reduce 48 (src line 102)
+	.  reduce 48 (src line 106)
 
 
 state 45
 	field_st:  field_st '.' Label.    (49)
 
-	.  reduce 49 (src line 107)
+	.  reduce 49 (src line 111)
 
 
 state 46

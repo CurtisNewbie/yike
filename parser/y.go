@@ -715,14 +715,14 @@ yydefault:
 		}
 	case 48:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:103
+//line parser.y:107
 		{
 			v := GlobalVarRead(yyDollar[1])
 			yyVAL = yySymType{val: WalkField(v, yyDollar[3].val)}
 		}
 	case 49:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line parser.y:107
+//line parser.y:111
 		{
 			yyVAL = yySymType{val: WalkField(yyDollar[1].val, yyDollar[3].val)}
 		}

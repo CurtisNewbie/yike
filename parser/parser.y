@@ -99,6 +99,10 @@ network_st:
     | Delete String header_st body_st { $$ = HttpSend("DELETE", $2.val.(string), $3, $4) }
     | Head String header_st body_st { $$ = HttpSend("HEAD", $2.val.(string), $3, $4) }
 
+/*
+    TODO: make field_st lazy, only evals on terminal statement like print or something else
+    so that we can not only use it to read but also to write
+*/
 field_st:
     Label '.' Label {
         v := GlobalVarRead($1)
