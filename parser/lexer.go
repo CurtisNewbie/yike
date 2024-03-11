@@ -221,7 +221,11 @@ func Run(s string) {
 	defer func() { Debugf("VM ran for %v, script: \n%v\n", time.Since(start), s) }()
 	lines := strings.Split(s, "\n")
 	for _, l := range lines {
-		if strings.TrimSpace(l) == "" {
+		l = strings.TrimSpace(l)
+		if l == "" {
+			continue
+		}
+		if strings.HasPrefix(l, "//") {
 			continue
 		}
 		interpret(l)
