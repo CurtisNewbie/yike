@@ -3,9 +3,12 @@
 yikes - simple programming language used to learn lexer and parser
 
 Supports:
+- number (int64 / float64)
+- bool
 - value assignment
 - `+ - * /` arithmatic operations
 - print(...) function
+- type(...) functino
 - string concatenation `+`
 - HTTP requests, e.g.,
     - `GET 'http://localhost:80' -h 'my-header:123' -d '123'`
