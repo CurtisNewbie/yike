@@ -31,3 +31,12 @@ type(a)
 a = false
 print(a)
 type(a)
+
+j = json('{ "abc": {"jpg": "yo"} }')
+print(j)
+js = jsonstr(j)
+print(js)
+
+append(jsonstr(j), 'testdata/test.txt')
+append('\nis that okay?', 'testdata/test.txt')
+write('yes!', 'testdata/test2.txt')

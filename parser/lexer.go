@@ -10,6 +10,7 @@ import (
 )
 
 type KwTableInf struct {
+	Kw       string
 	Type     int
 	Callback func(lval *yySymType)
 }
@@ -17,17 +18,21 @@ type KwTableInf struct {
 var (
 	vmrt = newVm()
 
-	kwTable = map[string]KwTableInf{
-		"print":  {Type: Print},
-		"type":   {Type: Type},
-		"json":   {Type: Json},
-		"GET":    {Type: Get},
-		"PUT":    {Type: Put},
-		"POST":   {Type: Post},
-		"HEAD":   {Type: Head},
-		"DELETE": {Type: Delete},
-		"true":   {Type: Bool, Callback: func(lval *yySymType) { lval.val = true }},
-		"false":  {Type: Bool, Callback: func(lval *yySymType) { lval.val = false }},
+	// order matters here
+	kwTable = []KwTableInf{
+		{Kw: "jsonstr", Type: JsonStr},
+		{Kw: "print", Type: Print},
+		{Kw: "type", Type: Type},
+		{Kw: "json", Type: Json},
+		{Kw: "GET", Type: Get},
+		{Kw: "PUT", Type: Put},
+		{Kw: "POST", Type: Post},
+		{Kw: "HEAD", Type: Head},
+		{Kw: "DELETE", Type: Delete},
+		{Kw: "true", Type: Bool, Callback: func(lval *yySymType) { lval.val = true }},
+		{Kw: "false", Type: Bool, Callback: func(lval *yySymType) { lval.val = false }},
+		{Kw: "write", Type: Write},
+		{Kw: "append", Type: Append},
 	}
 )
 
@@ -189,8 +194,8 @@ func (v *vm) parseString(lval *yySymType) int {
 }
 
 func (v *vm) parseKeywords(lval *yySymType) (int, bool) {
-	for kw, kwtp := range kwTable {
-		if i, ok := v.parseKeyword(lval, kw, kwtp); ok {
+	for _, kwtp := range kwTable {
+		if i, ok := v.parseKeyword(lval, kwtp.Kw, kwtp); ok {
 			return i, true
 		}
 	}

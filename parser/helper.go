@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"reflect"
 	"strings"
 
@@ -235,4 +236,65 @@ func StrToMap(v any) any {
 		return m
 	}
 	return nil
+}
+
+func WriteFile(v any, file string) {
+	f, err := ReadWriteFile(file)
+	if err != nil {
+		panic(fmt.Errorf("failed to open file %v, %v", file, err))
+	}
+	defer f.Close()
+	if s, ok := v.(string); ok {
+		_, err := f.Write([]byte(s))
+		if err != nil {
+			panic(fmt.Errorf("failed to write file %v, %v", file, err))
+		}
+		fmt.Printf("Wrote to file %v\n", file)
+	} else {
+		panic("can only write string to file")
+	}
+}
+
+func AppendFile(v any, file string) {
+	f, err := AppendableFile(file)
+	if err != nil {
+		panic(fmt.Errorf("failed to open file %v, %v", file, err))
+	}
+	defer f.Close()
+	if s, ok := v.(string); ok {
+		_, err := f.Write([]byte(s))
+		if err != nil {
+			panic(fmt.Errorf("failed to write file %v, %v", file, err))
+		}
+		fmt.Printf("Appended to file %v\n", file)
+	} else {
+		panic("can only append string to file")
+	}
+}
+
+// Open file with 0666 permission.
+func OpenFile(name string, flag int) (*os.File, error) {
+	return os.OpenFile(name, flag, 0666)
+}
+
+// Create appendable file with 0666 permission.
+func AppendableFile(name string) (*os.File, error) {
+	return OpenFile(name, os.O_CREATE|os.O_APPEND|os.O_WRONLY)
+}
+
+// Create readable & writable file with 0666 permission.
+func ReadWriteFile(name string) (*os.File, error) {
+	return OpenFile(name, os.O_CREATE|os.O_RDWR)
+}
+
+func ToJsonStr(v any) any {
+	if s, ok := v.(string); ok {
+		return s
+	}
+
+	buf, err := json.Marshal(v)
+	if err != nil {
+		panic(fmt.Errorf("failed to marshal json, %v", err))
+	}
+	return string(buf)
 }

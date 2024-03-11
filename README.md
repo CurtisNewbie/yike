@@ -9,6 +9,10 @@ Supports:
 - `+ - * /` arithmatic operations
 - print(...) function
 - type(...) functino
+- write(string, file) function
+- append(string, file) function
+- json(...) function
+- jsonstr(...) function
 - string concatenation `+`
 - HTTP requests, e.g.,
     - `GET 'http://localhost:80' -h 'my-header:123' -d '123'`
