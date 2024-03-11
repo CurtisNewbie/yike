@@ -133,7 +133,7 @@ func Debugf(s string, args ...any) {
 }
 
 func HttpSend(method string, url string, header yySymType, body yySymType) yySymType {
-	fmt.Printf("Sending '%v %v', %#v, %#v\n", method, url, header, body)
+	fmt.Printf("Sending '%v %v', header: %#v, body: %#v\n", method, url, header.val, body.val)
 
 	var typ string
 	var br io.Reader = nil
@@ -141,11 +141,10 @@ func HttpSend(method string, url string, header yySymType, body yySymType) yySym
 		if s, ok := body.val.(string); ok {
 			br = bytes.NewReader([]byte(s))
 			typ = "text"
-		}
-		if j, ok := body.val.(map[string]any); ok {
-			byt, err := json.Marshal(j)
+		} else {
+			byt, err := json.Marshal(body.val)
 			if err != nil {
-				panic(fmt.Sprintf("failed to marshal json, %#v, %v", j, err))
+				panic(fmt.Sprintf("failed to marshal json, %#v, %v", body, err))
 			}
 			br = bytes.NewReader(byt)
 			typ = "json"
