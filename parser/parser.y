@@ -14,6 +14,7 @@ package parser
 %token Type
 %token Get Put Post Delete Head
 %token Header Body Json
+%token Comment
 
 %right '='
 %left '+' '-'
@@ -26,6 +27,7 @@ package parser
 expression:
     assignment
     | statement
+    | Comment
 
 statement:
     print_st

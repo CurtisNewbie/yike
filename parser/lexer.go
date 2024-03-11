@@ -51,7 +51,7 @@ func (v *vm) Lex(lval *yySymType) int {
 			case c == '/' && v.lookAheadIs(1, '/'):
 				gap := len(v.script) - v.offset
 				v.move(gap)
-				return int(gap)
+				return Comment
 			case c == '-':
 				if v.lookAheadIs(1, 'h') { // -h
 					v.move(2)
@@ -223,9 +223,6 @@ func Run(s string) {
 	for _, l := range lines {
 		l = strings.TrimSpace(l)
 		if l == "" {
-			continue
-		}
-		if strings.HasPrefix(l, "//") {
 			continue
 		}
 		interpret(l)
