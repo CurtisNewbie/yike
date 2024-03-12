@@ -38,8 +38,9 @@ Some random code copied from terminal:
 
 >>> Entering interactive mode:
 >>>
->>> res = GET 'http://localhost:80' -d json('{}')
-Sending 'GET http://localhost:80', header: <nil>, body: map[string]interface {}{}
+>>> res = GET 'http://localhost:80' -h 'myheader:myvalue' -h 'myheader2:myvalue2' -d
+ json('{ "id" : 1 }')
+Sending 'GET http://localhost:80', header: []string{"myheader:myvalue", "myheader2:myvalue2"}, body: map[string]interface {}{"id":1}
 >>> print(res)
 map[body:[] code:200]
 >>> print(res.code)
