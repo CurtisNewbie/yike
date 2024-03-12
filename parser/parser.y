@@ -33,6 +33,7 @@ expression:
     assignment
     | statement
     | Comment
+    | expression Comment
 
 statement:
     print_st
@@ -86,10 +87,12 @@ assignment:
     Label '=' eval_expr { GlobalVarWrite($1, $3.val) }
     | Label '=' { SyntaxError() }
     | Label '=' network_st { GlobalVarWrite($1, $3.val) }
-    | Label '=' field_st { GlobalVarWrite($1, WalkField($3.val.(string))) }
     | Label '=' json_st { GlobalVarWrite($1, $3.val) }
     | Label '=' jsonstr_st { GlobalVarWrite($1, $3.val) }
+    | field_st '=' json_st { GlobalVarFieldWrite($1.val.(string), $3.val) }
     | field_st '=' eval_expr { GlobalVarFieldWrite($1.val.(string), $3.val) }
+    | field_st '=' jsonstr_st { GlobalVarFieldWrite($1.val.(string), $3.val) }
+    | field_st '=' network_st { GlobalVarFieldWrite($1.val.(string), $3.val) }
 
 arith_st:
     eval_expr '+' eval_expr { $$ = yySymType{ val: ValAdd($1.val, $3.val) } }
@@ -103,6 +106,7 @@ eval_expr:
     | Label { $$ = yySymType{ val: GlobalVarRead($1) } }
     | arith_st { $$ = $1 }
     | Bool { $$ = $1 }
+    | field_st { $$ = yySymType{ val: WalkField($1.val.(string)) } }
 
 header_sg:
     Header String { $$ = $2 }

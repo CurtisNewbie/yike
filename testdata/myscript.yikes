@@ -1,11 +1,11 @@
-// a = 1 + 2 * 3
-// print(a) // this should be 7
-// a
-// print()
+a = 1 + 2 * 3
+print(a) // this should be 7
+a
+print()
 
-// b = 1 * 2 + 3
-// print(b) // this should be 5
-// print()
+b = 1 * 2 + 3
+print(b) // this should be 5
+print()
 
 // res = GET 'http://localhost:80' -h 'myapp:yoyooy' -h 'myapp2:nonono' -d json('{ "abc": "abc" }')
 // res
@@ -44,3 +44,8 @@ write('yes!', 'testdata/test.txt')
 obj.name = 'dummy'
 print(obj)
 print(obj.name)
+
+print(obj.name + ' is okay' + '? maybe')
+
+obj.age = 123
+print(obj.age * 2 + 1)
