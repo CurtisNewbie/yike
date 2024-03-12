@@ -72,6 +72,40 @@ func GlobalVarRead(y yySymType) any {
 	return GlobalVar()[n]
 }
 
+func GlobalVarFieldWrite(expr string, val any) {
+	if expr == "" {
+		return
+	}
+	tk := strings.Split(expr, ".")
+	if len(tk) < 1 {
+		return
+	}
+	label := tk[0]
+
+	v := GlobalVar()[label]
+	if v == nil {
+		v = map[string]any{}
+	}
+
+	m, ok := v.(map[string]any)
+	if !ok {
+		panic("Invalid datatype")
+	}
+
+	for i := 1; i < len(tk)-1; i++ {
+		if f, ok := m[tk[i]]; ok {
+			if _, ok := f.(map[string]any); !ok {
+				panic("Invalid datatype of fields")
+			}
+		} else {
+			m[tk[i]] = map[string]any{}
+		}
+		m = m[tk[i]].(map[string]any)
+	}
+	m[tk[len(tk)-1]] = val
+	GlobalVar()[label] = v
+}
+
 func GlobalVarWrite(y yySymType, val any) {
 	Debugf("GlobalVarWrite: %v, %v\n", y.val, val)
 	n := y.val.(string)
@@ -216,15 +250,23 @@ func joinHeaders(h1 yySymType, h2 yySymType) yySymType {
 	}
 }
 
-func WalkField(v any, field any) any {
-	if v == nil {
+func WalkField(expr string) any {
+	if expr == "" {
 		return nil
 	}
-	fieldStr := cast.ToString(field)
-	if m, ok := v.(map[string]any); ok {
-		return m[fieldStr]
+	tk := strings.Split(expr, ".")
+	if len(tk) < 1 {
+		return nil
 	}
-	return nil
+	v := GlobalVar()[tk[0]]
+	for i := 1; i < len(tk)-1; i++ {
+		if m, ok := v.(map[string]any); ok {
+			v = m[tk[i]]
+		} else {
+			return nil
+		}
+	}
+	return v.(map[string]any)[tk[len(tk)-1]]
 }
 
 func StrToMap(v any) any {
@@ -243,6 +285,7 @@ func WriteFile(v any, file string) {
 	if err != nil {
 		panic(fmt.Errorf("failed to open file %v, %v", file, err))
 	}
+	f.Truncate(0)
 	defer f.Close()
 	if s, ok := v.(string); ok {
 		_, err := f.Write([]byte(s))

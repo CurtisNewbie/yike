@@ -54,7 +54,7 @@ print_st:
     Print '(' Value ')' { PrintYySym($3) }
     | Print '(' Label ')' { PrintGlobalYySym($3) }
     | Print '(' ')' { println("") }
-    | Print '(' field_st ')' { PrintYySym($3) }
+    | Print '(' field_st ')' { PrintYySym(yySymType{ val: WalkField($3.val.(string)) }) }
     | Print '(' network_st ')' { PrintYySym($3) }
     | Print '(' jsonstr_st ')' { PrintYySym($3) }
     | Print '(' arith_st ')' { PrintYySym($3) }
@@ -75,20 +75,21 @@ type_st:
 json_st:
     Json '(' String ')' { $$ = yySymType{ val: StrToMap($3.val) } }
     | Json '(' Label ')' { $$ = yySymType{ val: StrToMap(GlobalVarRead($3)) } }
-    | Json '(' field_st ')' { $$ = yySymType{ val: StrToMap($3.val) } }
+    | Json '(' field_st ')' { $$ = yySymType{ val: StrToMap(WalkField($3.val.(string))) } }
 
 jsonstr_st:
     JsonStr '(' String ')' { $$ = yySymType{ val: ToJsonStr($3.val) } }
     | JsonStr '(' Label ')' { $$ = yySymType{ val: ToJsonStr(GlobalVarRead($3)) } }
-    | JsonStr '(' field_st ')' { $$ = yySymType{ val: ToJsonStr($3.val) } }
+    | JsonStr '(' field_st ')' { $$ = yySymType{ val: ToJsonStr(WalkField($3.val.(string))) } }
 
 assignment:
     Label '=' eval_expr { GlobalVarWrite($1, $3.val) }
     | Label '=' { SyntaxError() }
     | Label '=' network_st { GlobalVarWrite($1, $3.val) }
-    | Label '=' field_st { GlobalVarWrite($1, $3.val) }
+    | Label '=' field_st { GlobalVarWrite($1, WalkField($3.val.(string))) }
     | Label '=' json_st { GlobalVarWrite($1, $3.val) }
     | Label '=' jsonstr_st { GlobalVarWrite($1, $3.val) }
+    | field_st '=' eval_expr { GlobalVarFieldWrite($1.val.(string), $3.val) }
 
 arith_st:
     eval_expr '+' eval_expr { $$ = yySymType{ val: ValAdd($1.val, $3.val) } }
@@ -123,15 +124,11 @@ network_st:
     | Delete String header_st body_st { $$ = HttpSend("DELETE", $2.val.(string), $3, $4) }
     | Head String header_st body_st { $$ = HttpSend("HEAD", $2.val.(string), $3, $4) }
 
-/*
-    TODO: make field_st lazy, only evals on terminal statement like print or something else
-    so that we can not only use it to read but also to write
-*/
+/* this is lazy, it doesn't walk the fields recursively until meeting a terminal statement */
 field_st:
     Label '.' Label {
-        v := GlobalVarRead($1)
-        $$ = yySymType{ val: WalkField(v, $3.val) }
+        $$ = yySymType{ val: $1.val.(string) + "." + $3.val.(string) }
     }
     | field_st '.' Label {
-        $$ = yySymType{ val: WalkField($1.val, $3.val) }
+        $$ = yySymType{ val: $1.val.(string) + "." + $3.val.(string) }
     }

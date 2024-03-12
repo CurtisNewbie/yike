@@ -39,4 +39,8 @@ print(js)
 
 append(jsonstr(j), 'testdata/test.txt')
 append('\nis that okay?', 'testdata/test.txt')
-write('yes!', 'testdata/test2.txt')
+write('yes!', 'testdata/test.txt')
+
+obj.name = 'dummy'
+print(obj)
+print(obj.name)

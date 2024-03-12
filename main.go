@@ -54,7 +54,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf(">>> Reading file %v\n", *file)
+	fmt.Printf("\n>>> Reading file %v\n", *file)
 	f, err := os.ReadFile(*file)
 	if err != nil {
 		panic(err)
