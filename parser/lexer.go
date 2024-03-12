@@ -33,6 +33,7 @@ var (
 		{Kw: "false", Type: Bool, Callback: func(lval *yySymType) { lval.val = false }},
 		{Kw: "write", Type: Write},
 		{Kw: "append", Type: Append},
+		{Kw: "string", Type: StringFunc},
 	}
 )
 

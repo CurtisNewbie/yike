@@ -20,6 +20,7 @@ package parser
 %token Bool
 %token Write
 %token Append
+%token StringFunc
 
 %right '='
 %left '+' '-'
@@ -60,6 +61,7 @@ print_st:
     | Print '(' network_st ')' { PrintYySym($3) }
     | Print '(' jsonstr_st ')' { PrintYySym($3) }
     | Print '(' arith_st ')' { PrintYySym($3) }
+    | Print '(' string_st ')' { PrintYySym($3) }
 
 write_st:
     Write '(' Value ',' String ')' { WriteFile($3.val, $5.val.(string)) }
@@ -108,6 +110,8 @@ eval_expr:
     | arith_st { $$ = $1 }
     | Bool { $$ = $1 }
     | field_st { $$ = yySymType{ val: WalkField($1.val.(string)) } }
+    | string_st { $$ = $1 }
+
 
 header_sg:
     Header String { $$ = $2 }
@@ -137,3 +141,7 @@ field_st:
     | field_st '.' Label {
         $$ = yySymType{ val: $1.val.(string) + "." + $3.val.(string) }
     }
+
+string_st:
+    StringFunc '(' Label ')' { $$ = yySymType{ val: ToStr(GlobalVarRead($3)) } }
+    | StringFunc '(' field_st ')' { $$ = yySymType{ val: ToStr(WalkField($3.val.(string))) } }

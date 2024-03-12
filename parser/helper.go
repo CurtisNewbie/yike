@@ -341,3 +341,13 @@ func ToJsonStr(v any) any {
 	}
 	return string(buf)
 }
+
+func ToStr(val any) any {
+	if s, ok := val.(string); ok {
+		return s
+	}
+	if b, ok := val.([]byte); ok {
+		return string(b)
+	}
+	return cast.ToString(val)
+}

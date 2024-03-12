@@ -16,6 +16,7 @@ state 0
 	Bool  shift 17
 	Write  shift 26
 	Append  shift 27
+	StringFunc  shift 29
 	.  error
 
 	expression  goto 1
@@ -30,6 +31,7 @@ state 0
 	field_st  goto 7
 	write_st  goto 13
 	append_st  goto 14
+	string_st  goto 28
 	eval_expr  goto 20
 
 state 1
@@ -37,32 +39,32 @@ state 1
 	expression:  expression.Comment 
 
 	$end  accept
-	Comment  shift 28
+	Comment  shift 30
 	.  error
 
 
 state 2
 	expression:  assignment.    (1)
 
-	.  reduce 1 (src line 32)
+	.  reduce 1 (src line 33)
 
 
 state 3
 	expression:  statement.    (2)
 
-	.  reduce 2 (src line 34)
+	.  reduce 2 (src line 35)
 
 
 state 4
 	expression:  Comment.    (3)
 
-	.  reduce 3 (src line 35)
+	.  reduce 3 (src line 36)
 
 
 state 5
 	expression:  Value.    (5)
 
-	.  reduce 5 (src line 37)
+	.  reduce 5 (src line 38)
 
 
 state 6
@@ -72,14 +74,14 @@ state 6
 	assignment:  Label.'=' network_st 
 	assignment:  Label.'=' json_st 
 	assignment:  Label.'=' jsonstr_st 
-	eval_expr:  Label.    (53)
+	eval_expr:  Label.    (54)
 	field_st:  Label.'.' Label 
 
-	$end  reduce 14 (src line 49)
-	Comment  reduce 14 (src line 49)
-	'='  shift 29
-	'.'  shift 30
-	.  reduce 53 (src line 107)
+	$end  reduce 14 (src line 50)
+	Comment  reduce 14 (src line 50)
+	'='  shift 31
+	'.'  shift 32
+	.  reduce 54 (src line 109)
 
 
 state 7
@@ -88,89 +90,89 @@ state 7
 	assignment:  field_st.'=' eval_expr 
 	assignment:  field_st.'=' jsonstr_st 
 	assignment:  field_st.'=' network_st 
-	eval_expr:  field_st.    (56)
+	eval_expr:  field_st.    (57)
 	field_st:  field_st.'.' Label 
 
-	$end  reduce 11 (src line 45)
-	Comment  reduce 11 (src line 45)
-	'='  shift 31
-	'.'  shift 32
-	.  reduce 56 (src line 110)
+	$end  reduce 11 (src line 46)
+	Comment  reduce 11 (src line 46)
+	'='  shift 33
+	'.'  shift 34
+	.  reduce 57 (src line 112)
 
 
 state 8
 	statement:  print_st.    (6)
 
-	.  reduce 6 (src line 39)
+	.  reduce 6 (src line 40)
 
 
 state 9
 	statement:  label_st.    (7)
 
-	.  reduce 7 (src line 41)
+	.  reduce 7 (src line 42)
 
 
 state 10
 	statement:  type_st.    (8)
 
-	.  reduce 8 (src line 42)
+	.  reduce 8 (src line 43)
 
 
 state 11
 	statement:  arith_st.    (9)
-	eval_expr:  arith_st.    (54)
+	eval_expr:  arith_st.    (55)
 
-	$end  reduce 9 (src line 43)
-	Comment  reduce 9 (src line 43)
-	.  reduce 54 (src line 108)
+	$end  reduce 9 (src line 44)
+	Comment  reduce 9 (src line 44)
+	.  reduce 55 (src line 110)
 
 
 state 12
 	statement:  network_st.    (10)
 
-	.  reduce 10 (src line 44)
+	.  reduce 10 (src line 45)
 
 
 state 13
 	statement:  write_st.    (12)
 
-	.  reduce 12 (src line 46)
+	.  reduce 12 (src line 47)
 
 
 state 14
 	statement:  append_st.    (13)
 
-	.  reduce 13 (src line 47)
+	.  reduce 13 (src line 48)
 
 
 state 15
 	Value:  String.    (15)
-	eval_expr:  String.    (52)
+	eval_expr:  String.    (53)
 
-	$end  reduce 15 (src line 52)
-	Comment  reduce 15 (src line 52)
-	')'  reduce 15 (src line 52)
-	.  reduce 52 (src line 106)
+	$end  reduce 15 (src line 53)
+	Comment  reduce 15 (src line 53)
+	')'  reduce 15 (src line 53)
+	.  reduce 53 (src line 108)
 
 
 state 16
 	Value:  Number.    (16)
-	eval_expr:  Number.    (51)
+	eval_expr:  Number.    (52)
 
-	$end  reduce 16 (src line 53)
-	Comment  reduce 16 (src line 53)
-	')'  reduce 16 (src line 53)
-	.  reduce 51 (src line 104)
+	$end  reduce 16 (src line 54)
+	Comment  reduce 16 (src line 54)
+	')'  reduce 16 (src line 54)
+	.  reduce 52 (src line 106)
 
 
 state 17
 	Value:  Bool.    (17)
-	eval_expr:  Bool.    (55)
+	eval_expr:  Bool.    (56)
 
-	$end  reduce 17 (src line 53)
-	Comment  reduce 17 (src line 53)
-	')'  reduce 17 (src line 53)
-	.  reduce 55 (src line 109)
+	$end  reduce 17 (src line 54)
+	Comment  reduce 17 (src line 54)
+	')'  reduce 17 (src line 54)
+	.  reduce 56 (src line 111)
 
 
 state 18
@@ -181,15 +183,16 @@ state 18
 	print_st:  Print.'(' network_st ')' 
 	print_st:  Print.'(' jsonstr_st ')' 
 	print_st:  Print.'(' arith_st ')' 
+	print_st:  Print.'(' string_st ')' 
 
-	'('  shift 33
+	'('  shift 35
 	.  error
 
 
 state 19
 	type_st:  Type.'(' Label ')' 
 
-	'('  shift 34
+	'('  shift 36
 	.  error
 
 
@@ -199,45 +202,45 @@ state 20
 	arith_st:  eval_expr.'*' eval_expr 
 	arith_st:  eval_expr.'/' eval_expr 
 
-	'+'  shift 35
-	'-'  shift 36
-	'*'  shift 37
-	'/'  shift 38
+	'+'  shift 37
+	'-'  shift 38
+	'*'  shift 39
+	'/'  shift 40
 	.  error
 
 
 state 21
 	network_st:  Get.String header_st body_st 
 
-	String  shift 39
+	String  shift 41
 	.  error
 
 
 state 22
 	network_st:  Put.String header_st body_st 
 
-	String  shift 40
+	String  shift 42
 	.  error
 
 
 state 23
 	network_st:  Post.String header_st body_st 
 
-	String  shift 41
+	String  shift 43
 	.  error
 
 
 state 24
 	network_st:  Delete.String header_st body_st 
 
-	String  shift 42
+	String  shift 44
 	.  error
 
 
 state 25
 	network_st:  Head.String header_st body_st 
 
-	String  shift 43
+	String  shift 45
 	.  error
 
 
@@ -246,7 +249,7 @@ state 26
 	write_st:  Write.'(' Label ',' String ')' 
 	write_st:  Write.'(' jsonstr_st ',' String ')' 
 
-	'('  shift 44
+	'('  shift 46
 	.  error
 
 
@@ -255,84 +258,102 @@ state 27
 	append_st:  Append.'(' Label ',' String ')' 
 	append_st:  Append.'(' jsonstr_st ',' String ')' 
 
-	'('  shift 45
+	'('  shift 47
 	.  error
 
 
 state 28
-	expression:  expression Comment.    (4)
+	eval_expr:  string_st.    (58)
 
-	.  reduce 4 (src line 36)
+	.  reduce 58 (src line 113)
 
 
 state 29
+	string_st:  StringFunc.'(' Label ')' 
+	string_st:  StringFunc.'(' field_st ')' 
+
+	'('  shift 48
+	.  error
+
+
+state 30
+	expression:  expression Comment.    (4)
+
+	.  reduce 4 (src line 37)
+
+
+state 31
 	assignment:  Label '='.eval_expr 
-	assignment:  Label '='.    (39)
+	assignment:  Label '='.    (40)
 	assignment:  Label '='.network_st 
 	assignment:  Label '='.json_st 
 	assignment:  Label '='.jsonstr_st 
 
-	String  shift 51
-	Number  shift 50
-	Label  shift 52
+	String  shift 54
+	Number  shift 53
+	Label  shift 55
 	Get  shift 21
 	Put  shift 22
 	Post  shift 23
 	Delete  shift 24
 	Head  shift 25
-	Json  shift 56
-	JsonStr  shift 57
-	Bool  shift 54
-	.  reduce 39 (src line 89)
+	Json  shift 59
+	JsonStr  shift 60
+	Bool  shift 57
+	StringFunc  shift 29
+	.  reduce 40 (src line 91)
 
-	arith_st  goto 53
-	network_st  goto 47
-	field_st  goto 55
-	jsonstr_st  goto 49
-	json_st  goto 48
-	eval_expr  goto 46
+	arith_st  goto 56
+	network_st  goto 50
+	field_st  goto 58
+	jsonstr_st  goto 52
+	string_st  goto 28
+	json_st  goto 51
+	eval_expr  goto 49
 
-state 30
+state 32
 	field_st:  Label '.'.Label 
 
-	Label  shift 58
+	Label  shift 61
 	.  error
 
 
-state 31
+state 33
 	assignment:  field_st '='.json_st 
 	assignment:  field_st '='.eval_expr 
 	assignment:  field_st '='.jsonstr_st 
 	assignment:  field_st '='.network_st 
 
-	String  shift 51
-	Number  shift 50
-	Label  shift 52
+	String  shift 54
+	Number  shift 53
+	Label  shift 55
 	Get  shift 21
 	Put  shift 22
 	Post  shift 23
 	Delete  shift 24
 	Head  shift 25
-	Json  shift 56
-	JsonStr  shift 57
-	Bool  shift 54
+	Json  shift 59
+	JsonStr  shift 60
+	Bool  shift 57
+	StringFunc  shift 29
 	.  error
 
-	arith_st  goto 53
-	network_st  goto 62
-	field_st  goto 55
-	jsonstr_st  goto 61
-	json_st  goto 59
-	eval_expr  goto 60
+	arith_st  goto 56
+	network_st  goto 65
+	field_st  goto 58
+	jsonstr_st  goto 64
+	string_st  goto 28
+	json_st  goto 62
+	eval_expr  goto 63
 
-state 32
+state 34
 	field_st:  field_st '.'.Label 
 
-	Label  shift 63
+	Label  shift 66
 	.  error
 
 
-state 33
+state 35
 	print_st:  Print '('.Value ')' 
 	print_st:  Print '('.Label ')' 
 	print_st:  Print '('.')' 
@@ -340,870 +361,934 @@ state 33
 	print_st:  Print '('.network_st ')' 
 	print_st:  Print '('.jsonstr_st ')' 
 	print_st:  Print '('.arith_st ')' 
+	print_st:  Print '('.string_st ')' 
 
 	String  shift 15
 	Number  shift 16
-	Label  shift 65
+	Label  shift 68
 	Get  shift 21
 	Put  shift 22
 	Post  shift 23
 	Delete  shift 24
 	Head  shift 25
-	JsonStr  shift 57
+	JsonStr  shift 60
 	Bool  shift 17
-	')'  shift 66
+	StringFunc  shift 29
+	')'  shift 69
 	.  error
 
-	Value  goto 64
-	arith_st  goto 70
-	network_st  goto 68
-	field_st  goto 67
-	jsonstr_st  goto 69
+	Value  goto 67
+	arith_st  goto 73
+	network_st  goto 71
+	field_st  goto 70
+	jsonstr_st  goto 72
+	string_st  goto 74
 	eval_expr  goto 20
 
-state 34
+state 36
 	type_st:  Type '('.Label ')' 
 
-	Label  shift 71
+	Label  shift 75
 	.  error
 
-
-state 35
-	arith_st:  eval_expr '+'.eval_expr 
-
-	String  shift 51
-	Number  shift 50
-	Label  shift 52
-	Bool  shift 54
-	.  error
-
-	arith_st  goto 53
-	field_st  goto 55
-	eval_expr  goto 72
-
-state 36
-	arith_st:  eval_expr '-'.eval_expr 
-
-	String  shift 51
-	Number  shift 50
-	Label  shift 52
-	Bool  shift 54
-	.  error
-
-	arith_st  goto 53
-	field_st  goto 55
-	eval_expr  goto 73
 
 state 37
-	arith_st:  eval_expr '*'.eval_expr 
+	arith_st:  eval_expr '+'.eval_expr 
 
-	String  shift 51
-	Number  shift 50
-	Label  shift 52
-	Bool  shift 54
+	String  shift 54
+	Number  shift 53
+	Label  shift 55
+	Bool  shift 57
+	StringFunc  shift 29
 	.  error
 
-	arith_st  goto 53
-	field_st  goto 55
-	eval_expr  goto 74
+	arith_st  goto 56
+	field_st  goto 58
+	string_st  goto 28
+	eval_expr  goto 76
 
 state 38
-	arith_st:  eval_expr '/'.eval_expr 
+	arith_st:  eval_expr '-'.eval_expr 
 
-	String  shift 51
-	Number  shift 50
-	Label  shift 52
-	Bool  shift 54
+	String  shift 54
+	Number  shift 53
+	Label  shift 55
+	Bool  shift 57
+	StringFunc  shift 29
 	.  error
 
-	arith_st  goto 53
-	field_st  goto 55
-	eval_expr  goto 75
+	arith_st  goto 56
+	field_st  goto 58
+	string_st  goto 28
+	eval_expr  goto 77
 
 state 39
-	network_st:  Get String.header_st body_st 
-	header_st: .    (59)
+	arith_st:  eval_expr '*'.eval_expr 
 
-	Header  shift 78
-	.  reduce 59 (src line 117)
+	String  shift 54
+	Number  shift 53
+	Label  shift 55
+	Bool  shift 57
+	StringFunc  shift 29
+	.  error
 
-	header_sg  goto 77
-	header_st  goto 76
+	arith_st  goto 56
+	field_st  goto 58
+	string_st  goto 28
+	eval_expr  goto 78
 
 state 40
-	network_st:  Put String.header_st body_st 
-	header_st: .    (59)
+	arith_st:  eval_expr '/'.eval_expr 
 
-	Header  shift 78
-	.  reduce 59 (src line 117)
+	String  shift 54
+	Number  shift 53
+	Label  shift 55
+	Bool  shift 57
+	StringFunc  shift 29
+	.  error
 
-	header_sg  goto 77
-	header_st  goto 79
+	arith_st  goto 56
+	field_st  goto 58
+	string_st  goto 28
+	eval_expr  goto 79
 
 state 41
-	network_st:  Post String.header_st body_st 
-	header_st: .    (59)
+	network_st:  Get String.header_st body_st 
+	header_st: .    (61)
 
-	Header  shift 78
-	.  reduce 59 (src line 117)
+	Header  shift 82
+	.  reduce 61 (src line 121)
 
-	header_sg  goto 77
+	header_sg  goto 81
 	header_st  goto 80
 
 state 42
-	network_st:  Delete String.header_st body_st 
-	header_st: .    (59)
+	network_st:  Put String.header_st body_st 
+	header_st: .    (61)
 
-	Header  shift 78
-	.  reduce 59 (src line 117)
+	Header  shift 82
+	.  reduce 61 (src line 121)
 
-	header_sg  goto 77
-	header_st  goto 81
+	header_sg  goto 81
+	header_st  goto 83
 
 state 43
-	network_st:  Head String.header_st body_st 
-	header_st: .    (59)
+	network_st:  Post String.header_st body_st 
+	header_st: .    (61)
 
-	Header  shift 78
-	.  reduce 59 (src line 117)
+	Header  shift 82
+	.  reduce 61 (src line 121)
 
-	header_sg  goto 77
-	header_st  goto 82
+	header_sg  goto 81
+	header_st  goto 84
 
 state 44
+	network_st:  Delete String.header_st body_st 
+	header_st: .    (61)
+
+	Header  shift 82
+	.  reduce 61 (src line 121)
+
+	header_sg  goto 81
+	header_st  goto 85
+
+state 45
+	network_st:  Head String.header_st body_st 
+	header_st: .    (61)
+
+	Header  shift 82
+	.  reduce 61 (src line 121)
+
+	header_sg  goto 81
+	header_st  goto 86
+
+state 46
 	write_st:  Write '('.Value ',' String ')' 
 	write_st:  Write '('.Label ',' String ')' 
 	write_st:  Write '('.jsonstr_st ',' String ')' 
 
-	String  shift 86
-	Number  shift 87
-	Label  shift 84
-	JsonStr  shift 57
-	Bool  shift 88
+	String  shift 90
+	Number  shift 91
+	Label  shift 88
+	JsonStr  shift 60
+	Bool  shift 92
 	.  error
 
-	Value  goto 83
-	jsonstr_st  goto 85
+	Value  goto 87
+	jsonstr_st  goto 89
 
-state 45
+state 47
 	append_st:  Append '('.Value ',' String ')' 
 	append_st:  Append '('.Label ',' String ')' 
 	append_st:  Append '('.jsonstr_st ',' String ')' 
 
-	String  shift 86
-	Number  shift 87
-	Label  shift 90
-	JsonStr  shift 57
-	Bool  shift 88
+	String  shift 90
+	Number  shift 91
+	Label  shift 94
+	JsonStr  shift 60
+	Bool  shift 92
 	.  error
 
-	Value  goto 89
-	jsonstr_st  goto 91
+	Value  goto 93
+	jsonstr_st  goto 95
 
-state 46
-	assignment:  Label '=' eval_expr.    (38)
+state 48
+	string_st:  StringFunc '('.Label ')' 
+	string_st:  StringFunc '('.field_st ')' 
+
+	Label  shift 96
+	.  error
+
+	field_st  goto 97
+
+state 49
+	assignment:  Label '=' eval_expr.    (39)
 	arith_st:  eval_expr.'+' eval_expr 
 	arith_st:  eval_expr.'-' eval_expr 
 	arith_st:  eval_expr.'*' eval_expr 
 	arith_st:  eval_expr.'/' eval_expr 
 
-	'+'  shift 35
-	'-'  shift 36
-	'*'  shift 37
-	'/'  shift 38
-	.  reduce 38 (src line 87)
-
-
-state 47
-	assignment:  Label '=' network_st.    (40)
-
-	.  reduce 40 (src line 90)
-
-
-state 48
-	assignment:  Label '=' json_st.    (41)
-
-	.  reduce 41 (src line 91)
-
-
-state 49
-	assignment:  Label '=' jsonstr_st.    (42)
-
-	.  reduce 42 (src line 92)
+	'+'  shift 37
+	'-'  shift 38
+	'*'  shift 39
+	'/'  shift 40
+	.  reduce 39 (src line 89)
 
 
 state 50
-	eval_expr:  Number.    (51)
+	assignment:  Label '=' network_st.    (41)
 
-	.  reduce 51 (src line 104)
+	.  reduce 41 (src line 92)
 
 
 state 51
-	eval_expr:  String.    (52)
+	assignment:  Label '=' json_st.    (42)
+
+	.  reduce 42 (src line 93)
+
+
+state 52
+	assignment:  Label '=' jsonstr_st.    (43)
+
+	.  reduce 43 (src line 94)
+
+
+state 53
+	eval_expr:  Number.    (52)
 
 	.  reduce 52 (src line 106)
 
 
-state 52
-	eval_expr:  Label.    (53)
-	field_st:  Label.'.' Label 
-
-	'.'  shift 30
-	.  reduce 53 (src line 107)
-
-
-state 53
-	eval_expr:  arith_st.    (54)
-
-	.  reduce 54 (src line 108)
-
-
 state 54
-	eval_expr:  Bool.    (55)
+	eval_expr:  String.    (53)
 
-	.  reduce 55 (src line 109)
+	.  reduce 53 (src line 108)
 
 
 state 55
-	eval_expr:  field_st.    (56)
-	field_st:  field_st.'.' Label 
+	eval_expr:  Label.    (54)
+	field_st:  Label.'.' Label 
 
 	'.'  shift 32
-	.  reduce 56 (src line 110)
+	.  reduce 54 (src line 109)
 
 
 state 56
+	eval_expr:  arith_st.    (55)
+
+	.  reduce 55 (src line 110)
+
+
+state 57
+	eval_expr:  Bool.    (56)
+
+	.  reduce 56 (src line 111)
+
+
+state 58
+	eval_expr:  field_st.    (57)
+	field_st:  field_st.'.' Label 
+
+	'.'  shift 34
+	.  reduce 57 (src line 112)
+
+
+state 59
 	json_st:  Json.'(' String ')' 
 	json_st:  Json.'(' Label ')' 
 	json_st:  Json.'(' field_st ')' 
 
-	'('  shift 92
+	'('  shift 98
 	.  error
 
 
-state 57
+state 60
 	jsonstr_st:  JsonStr.'(' String ')' 
 	jsonstr_st:  JsonStr.'(' Label ')' 
 	jsonstr_st:  JsonStr.'(' field_st ')' 
 
-	'('  shift 93
+	'('  shift 99
 	.  error
 
 
-state 58
-	field_st:  Label '.' Label.    (69)
+state 61
+	field_st:  Label '.' Label.    (71)
 
-	.  reduce 69 (src line 133)
-
-
-state 59
-	assignment:  field_st '=' json_st.    (43)
-
-	.  reduce 43 (src line 93)
+	.  reduce 71 (src line 137)
 
 
-state 60
-	assignment:  field_st '=' eval_expr.    (44)
+state 62
+	assignment:  field_st '=' json_st.    (44)
+
+	.  reduce 44 (src line 95)
+
+
+state 63
+	assignment:  field_st '=' eval_expr.    (45)
 	arith_st:  eval_expr.'+' eval_expr 
 	arith_st:  eval_expr.'-' eval_expr 
 	arith_st:  eval_expr.'*' eval_expr 
 	arith_st:  eval_expr.'/' eval_expr 
 
-	'+'  shift 35
-	'-'  shift 36
-	'*'  shift 37
-	'/'  shift 38
-	.  reduce 44 (src line 94)
-
-
-state 61
-	assignment:  field_st '=' jsonstr_st.    (45)
-
-	.  reduce 45 (src line 95)
-
-
-state 62
-	assignment:  field_st '=' network_st.    (46)
-
-	.  reduce 46 (src line 96)
-
-
-state 63
-	field_st:  field_st '.' Label.    (70)
-
-	.  reduce 70 (src line 137)
+	'+'  shift 37
+	'-'  shift 38
+	'*'  shift 39
+	'/'  shift 40
+	.  reduce 45 (src line 96)
 
 
 state 64
-	print_st:  Print '(' Value.')' 
+	assignment:  field_st '=' jsonstr_st.    (46)
 
-	')'  shift 94
-	.  error
+	.  reduce 46 (src line 97)
 
 
 state 65
-	print_st:  Print '(' Label.')' 
-	eval_expr:  Label.    (53)
-	field_st:  Label.'.' Label 
+	assignment:  field_st '=' network_st.    (47)
 
-	')'  shift 95
-	'.'  shift 30
-	.  reduce 53 (src line 107)
+	.  reduce 47 (src line 98)
 
 
 state 66
-	print_st:  Print '(' ')'.    (20)
+	field_st:  field_st '.' Label.    (72)
 
-	.  reduce 20 (src line 58)
+	.  reduce 72 (src line 141)
 
 
 state 67
-	print_st:  Print '(' field_st.')' 
-	eval_expr:  field_st.    (56)
-	field_st:  field_st.'.' Label 
-
-	')'  shift 96
-	'.'  shift 32
-	.  reduce 56 (src line 110)
-
-
-state 68
-	print_st:  Print '(' network_st.')' 
-
-	')'  shift 97
-	.  error
-
-
-state 69
-	print_st:  Print '(' jsonstr_st.')' 
-
-	')'  shift 98
-	.  error
-
-
-state 70
-	print_st:  Print '(' arith_st.')' 
-	eval_expr:  arith_st.    (54)
-
-	')'  shift 99
-	.  reduce 54 (src line 108)
-
-
-state 71
-	type_st:  Type '(' Label.')' 
+	print_st:  Print '(' Value.')' 
 
 	')'  shift 100
 	.  error
 
 
-state 72
-	arith_st:  eval_expr.'+' eval_expr 
-	arith_st:  eval_expr '+' eval_expr.    (47)
-	arith_st:  eval_expr.'-' eval_expr 
-	arith_st:  eval_expr.'*' eval_expr 
-	arith_st:  eval_expr.'/' eval_expr 
+state 68
+	print_st:  Print '(' Label.')' 
+	eval_expr:  Label.    (54)
+	field_st:  Label.'.' Label 
 
-	'*'  shift 37
-	'/'  shift 38
-	.  reduce 47 (src line 98)
+	')'  shift 101
+	'.'  shift 32
+	.  reduce 54 (src line 109)
+
+
+state 69
+	print_st:  Print '(' ')'.    (20)
+
+	.  reduce 20 (src line 59)
+
+
+state 70
+	print_st:  Print '(' field_st.')' 
+	eval_expr:  field_st.    (57)
+	field_st:  field_st.'.' Label 
+
+	')'  shift 102
+	'.'  shift 34
+	.  reduce 57 (src line 112)
+
+
+state 71
+	print_st:  Print '(' network_st.')' 
+
+	')'  shift 103
+	.  error
+
+
+state 72
+	print_st:  Print '(' jsonstr_st.')' 
+
+	')'  shift 104
+	.  error
 
 
 state 73
-	arith_st:  eval_expr.'+' eval_expr 
-	arith_st:  eval_expr.'-' eval_expr 
-	arith_st:  eval_expr '-' eval_expr.    (48)
-	arith_st:  eval_expr.'*' eval_expr 
-	arith_st:  eval_expr.'/' eval_expr 
+	print_st:  Print '(' arith_st.')' 
+	eval_expr:  arith_st.    (55)
 
-	'*'  shift 37
-	'/'  shift 38
-	.  reduce 48 (src line 100)
+	')'  shift 105
+	.  reduce 55 (src line 110)
 
 
 state 74
-	arith_st:  eval_expr.'+' eval_expr 
-	arith_st:  eval_expr.'-' eval_expr 
-	arith_st:  eval_expr.'*' eval_expr 
-	arith_st:  eval_expr '*' eval_expr.    (49)
-	arith_st:  eval_expr.'/' eval_expr 
+	print_st:  Print '(' string_st.')' 
+	eval_expr:  string_st.    (58)
 
-	.  reduce 49 (src line 101)
+	')'  shift 106
+	.  reduce 58 (src line 113)
 
 
 state 75
+	type_st:  Type '(' Label.')' 
+
+	')'  shift 107
+	.  error
+
+
+state 76
+	arith_st:  eval_expr.'+' eval_expr 
+	arith_st:  eval_expr '+' eval_expr.    (48)
+	arith_st:  eval_expr.'-' eval_expr 
+	arith_st:  eval_expr.'*' eval_expr 
+	arith_st:  eval_expr.'/' eval_expr 
+
+	'*'  shift 39
+	'/'  shift 40
+	.  reduce 48 (src line 100)
+
+
+state 77
+	arith_st:  eval_expr.'+' eval_expr 
+	arith_st:  eval_expr.'-' eval_expr 
+	arith_st:  eval_expr '-' eval_expr.    (49)
+	arith_st:  eval_expr.'*' eval_expr 
+	arith_st:  eval_expr.'/' eval_expr 
+
+	'*'  shift 39
+	'/'  shift 40
+	.  reduce 49 (src line 102)
+
+
+state 78
+	arith_st:  eval_expr.'+' eval_expr 
+	arith_st:  eval_expr.'-' eval_expr 
+	arith_st:  eval_expr.'*' eval_expr 
+	arith_st:  eval_expr '*' eval_expr.    (50)
+	arith_st:  eval_expr.'/' eval_expr 
+
+	.  reduce 50 (src line 103)
+
+
+state 79
 	arith_st:  eval_expr.'+' eval_expr 
 	arith_st:  eval_expr.'-' eval_expr 
 	arith_st:  eval_expr.'*' eval_expr 
 	arith_st:  eval_expr.'/' eval_expr 
-	arith_st:  eval_expr '/' eval_expr.    (50)
+	arith_st:  eval_expr '/' eval_expr.    (51)
 
-	.  reduce 50 (src line 102)
+	.  reduce 51 (src line 104)
 
-
-state 76
-	network_st:  Get String header_st.body_st 
-	body_st: .    (61)
-
-	Body  shift 102
-	.  reduce 61 (src line 120)
-
-	body_st  goto 101
-
-state 77
-	header_st:  header_sg.    (58)
-	header_st:  header_sg.header_sg 
-
-	Header  shift 78
-	.  reduce 58 (src line 115)
-
-	header_sg  goto 103
-
-state 78
-	header_sg:  Header.String 
-
-	String  shift 104
-	.  error
-
-
-state 79
-	network_st:  Put String header_st.body_st 
-	body_st: .    (61)
-
-	Body  shift 102
-	.  reduce 61 (src line 120)
-
-	body_st  goto 105
 
 state 80
-	network_st:  Post String header_st.body_st 
-	body_st: .    (61)
+	network_st:  Get String header_st.body_st 
+	body_st: .    (63)
 
-	Body  shift 102
-	.  reduce 61 (src line 120)
-
-	body_st  goto 106
-
-state 81
-	network_st:  Delete String header_st.body_st 
-	body_st: .    (61)
-
-	Body  shift 102
-	.  reduce 61 (src line 120)
-
-	body_st  goto 107
-
-state 82
-	network_st:  Head String header_st.body_st 
-	body_st: .    (61)
-
-	Body  shift 102
-	.  reduce 61 (src line 120)
+	Body  shift 109
+	.  reduce 63 (src line 124)
 
 	body_st  goto 108
 
-state 83
-	write_st:  Write '(' Value.',' String ')' 
+state 81
+	header_st:  header_sg.    (60)
+	header_st:  header_sg.header_sg 
 
-	','  shift 109
+	Header  shift 82
+	.  reduce 60 (src line 119)
+
+	header_sg  goto 110
+
+state 82
+	header_sg:  Header.String 
+
+	String  shift 111
 	.  error
 
+
+state 83
+	network_st:  Put String header_st.body_st 
+	body_st: .    (63)
+
+	Body  shift 109
+	.  reduce 63 (src line 124)
+
+	body_st  goto 112
 
 state 84
-	write_st:  Write '(' Label.',' String ')' 
+	network_st:  Post String header_st.body_st 
+	body_st: .    (63)
 
-	','  shift 110
-	.  error
+	Body  shift 109
+	.  reduce 63 (src line 124)
 
+	body_st  goto 113
 
 state 85
-	write_st:  Write '(' jsonstr_st.',' String ')' 
+	network_st:  Delete String header_st.body_st 
+	body_st: .    (63)
 
-	','  shift 111
-	.  error
+	Body  shift 109
+	.  reduce 63 (src line 124)
 
+	body_st  goto 114
 
 state 86
-	Value:  String.    (15)
+	network_st:  Head String header_st.body_st 
+	body_st: .    (63)
 
-	.  reduce 15 (src line 52)
+	Body  shift 109
+	.  reduce 63 (src line 124)
 
+	body_st  goto 115
 
 state 87
-	Value:  Number.    (16)
+	write_st:  Write '(' Value.',' String ')' 
 
-	.  reduce 16 (src line 53)
+	','  shift 116
+	.  error
 
 
 state 88
-	Value:  Bool.    (17)
+	write_st:  Write '(' Label.',' String ')' 
 
-	.  reduce 17 (src line 53)
+	','  shift 117
+	.  error
 
 
 state 89
-	append_st:  Append '(' Value.',' String ')' 
+	write_st:  Write '(' jsonstr_st.',' String ')' 
 
-	','  shift 112
+	','  shift 118
 	.  error
 
 
 state 90
-	append_st:  Append '(' Label.',' String ')' 
+	Value:  String.    (15)
 
-	','  shift 113
-	.  error
+	.  reduce 15 (src line 53)
 
 
 state 91
-	append_st:  Append '(' jsonstr_st.',' String ')' 
+	Value:  Number.    (16)
 
-	','  shift 114
-	.  error
+	.  reduce 16 (src line 54)
 
 
 state 92
+	Value:  Bool.    (17)
+
+	.  reduce 17 (src line 54)
+
+
+state 93
+	append_st:  Append '(' Value.',' String ')' 
+
+	','  shift 119
+	.  error
+
+
+state 94
+	append_st:  Append '(' Label.',' String ')' 
+
+	','  shift 120
+	.  error
+
+
+state 95
+	append_st:  Append '(' jsonstr_st.',' String ')' 
+
+	','  shift 121
+	.  error
+
+
+state 96
+	field_st:  Label.'.' Label 
+	string_st:  StringFunc '(' Label.')' 
+
+	')'  shift 122
+	'.'  shift 32
+	.  error
+
+
+state 97
+	field_st:  field_st.'.' Label 
+	string_st:  StringFunc '(' field_st.')' 
+
+	')'  shift 123
+	'.'  shift 34
+	.  error
+
+
+state 98
 	json_st:  Json '('.String ')' 
 	json_st:  Json '('.Label ')' 
 	json_st:  Json '('.field_st ')' 
 
-	String  shift 115
-	Label  shift 116
+	String  shift 124
+	Label  shift 125
 	.  error
 
-	field_st  goto 117
+	field_st  goto 126
 
-state 93
+state 99
 	jsonstr_st:  JsonStr '('.String ')' 
 	jsonstr_st:  JsonStr '('.Label ')' 
 	jsonstr_st:  JsonStr '('.field_st ')' 
 
-	String  shift 118
-	Label  shift 119
+	String  shift 127
+	Label  shift 128
 	.  error
 
-	field_st  goto 120
-
-state 94
-	print_st:  Print '(' Value ')'.    (18)
-
-	.  reduce 18 (src line 55)
-
-
-state 95
-	print_st:  Print '(' Label ')'.    (19)
-
-	.  reduce 19 (src line 57)
-
-
-state 96
-	print_st:  Print '(' field_st ')'.    (21)
-
-	.  reduce 21 (src line 59)
-
-
-state 97
-	print_st:  Print '(' network_st ')'.    (22)
-
-	.  reduce 22 (src line 60)
-
-
-state 98
-	print_st:  Print '(' jsonstr_st ')'.    (23)
-
-	.  reduce 23 (src line 61)
-
-
-state 99
-	print_st:  Print '(' arith_st ')'.    (24)
-
-	.  reduce 24 (src line 62)
-
+	field_st  goto 129
 
 state 100
-	type_st:  Type '(' Label ')'.    (31)
+	print_st:  Print '(' Value ')'.    (18)
 
-	.  reduce 31 (src line 74)
+	.  reduce 18 (src line 56)
 
 
 state 101
-	network_st:  Get String header_st body_st.    (64)
+	print_st:  Print '(' Label ')'.    (19)
 
-	.  reduce 64 (src line 125)
+	.  reduce 19 (src line 58)
 
 
 state 102
-	body_st:  Body.String 
-	body_st:  Body.json_st 
+	print_st:  Print '(' field_st ')'.    (21)
 
-	String  shift 121
-	Json  shift 56
-	.  error
+	.  reduce 21 (src line 60)
 
-	json_st  goto 122
 
 state 103
-	header_st:  header_sg header_sg.    (60)
+	print_st:  Print '(' network_st ')'.    (22)
 
-	.  reduce 60 (src line 118)
+	.  reduce 22 (src line 61)
 
 
 state 104
-	header_sg:  Header String.    (57)
+	print_st:  Print '(' jsonstr_st ')'.    (23)
 
-	.  reduce 57 (src line 112)
+	.  reduce 23 (src line 62)
 
 
 state 105
-	network_st:  Put String header_st body_st.    (65)
+	print_st:  Print '(' arith_st ')'.    (24)
 
-	.  reduce 65 (src line 127)
+	.  reduce 24 (src line 63)
 
 
 state 106
-	network_st:  Post String header_st body_st.    (66)
+	print_st:  Print '(' string_st ')'.    (25)
 
-	.  reduce 66 (src line 128)
+	.  reduce 25 (src line 64)
 
 
 state 107
-	network_st:  Delete String header_st body_st.    (67)
+	type_st:  Type '(' Label ')'.    (32)
 
-	.  reduce 67 (src line 129)
+	.  reduce 32 (src line 76)
 
 
 state 108
-	network_st:  Head String header_st body_st.    (68)
+	network_st:  Get String header_st body_st.    (66)
 
-	.  reduce 68 (src line 130)
+	.  reduce 66 (src line 129)
 
 
 state 109
-	write_st:  Write '(' Value ','.String ')' 
+	body_st:  Body.String 
+	body_st:  Body.json_st 
 
-	String  shift 123
+	String  shift 130
+	Json  shift 59
 	.  error
 
+	json_st  goto 131
 
 state 110
-	write_st:  Write '(' Label ','.String ')' 
-
-	String  shift 124
-	.  error
-
-
-state 111
-	write_st:  Write '(' jsonstr_st ','.String ')' 
-
-	String  shift 125
-	.  error
-
-
-state 112
-	append_st:  Append '(' Value ','.String ')' 
-
-	String  shift 126
-	.  error
-
-
-state 113
-	append_st:  Append '(' Label ','.String ')' 
-
-	String  shift 127
-	.  error
-
-
-state 114
-	append_st:  Append '(' jsonstr_st ','.String ')' 
-
-	String  shift 128
-	.  error
-
-
-state 115
-	json_st:  Json '(' String.')' 
-
-	')'  shift 129
-	.  error
-
-
-state 116
-	json_st:  Json '(' Label.')' 
-	field_st:  Label.'.' Label 
-
-	')'  shift 130
-	'.'  shift 30
-	.  error
-
-
-state 117
-	json_st:  Json '(' field_st.')' 
-	field_st:  field_st.'.' Label 
-
-	')'  shift 131
-	'.'  shift 32
-	.  error
-
-
-state 118
-	jsonstr_st:  JsonStr '(' String.')' 
-
-	')'  shift 132
-	.  error
-
-
-state 119
-	jsonstr_st:  JsonStr '(' Label.')' 
-	field_st:  Label.'.' Label 
-
-	')'  shift 133
-	'.'  shift 30
-	.  error
-
-
-state 120
-	jsonstr_st:  JsonStr '(' field_st.')' 
-	field_st:  field_st.'.' Label 
-
-	')'  shift 134
-	'.'  shift 32
-	.  error
-
-
-state 121
-	body_st:  Body String.    (62)
+	header_st:  header_sg header_sg.    (62)
 
 	.  reduce 62 (src line 122)
 
 
-state 122
-	body_st:  Body json_st.    (63)
+state 111
+	header_sg:  Header String.    (59)
 
-	.  reduce 63 (src line 123)
+	.  reduce 59 (src line 116)
+
+
+state 112
+	network_st:  Put String header_st body_st.    (67)
+
+	.  reduce 67 (src line 131)
+
+
+state 113
+	network_st:  Post String header_st body_st.    (68)
+
+	.  reduce 68 (src line 132)
+
+
+state 114
+	network_st:  Delete String header_st body_st.    (69)
+
+	.  reduce 69 (src line 133)
+
+
+state 115
+	network_st:  Head String header_st body_st.    (70)
+
+	.  reduce 70 (src line 134)
+
+
+state 116
+	write_st:  Write '(' Value ','.String ')' 
+
+	String  shift 132
+	.  error
+
+
+state 117
+	write_st:  Write '(' Label ','.String ')' 
+
+	String  shift 133
+	.  error
+
+
+state 118
+	write_st:  Write '(' jsonstr_st ','.String ')' 
+
+	String  shift 134
+	.  error
+
+
+state 119
+	append_st:  Append '(' Value ','.String ')' 
+
+	String  shift 135
+	.  error
+
+
+state 120
+	append_st:  Append '(' Label ','.String ')' 
+
+	String  shift 136
+	.  error
+
+
+state 121
+	append_st:  Append '(' jsonstr_st ','.String ')' 
+
+	String  shift 137
+	.  error
+
+
+state 122
+	string_st:  StringFunc '(' Label ')'.    (73)
+
+	.  reduce 73 (src line 145)
 
 
 state 123
-	write_st:  Write '(' Value ',' String.')' 
+	string_st:  StringFunc '(' field_st ')'.    (74)
 
-	')'  shift 135
-	.  error
+	.  reduce 74 (src line 147)
 
 
 state 124
-	write_st:  Write '(' Label ',' String.')' 
-
-	')'  shift 136
-	.  error
-
-
-state 125
-	write_st:  Write '(' jsonstr_st ',' String.')' 
-
-	')'  shift 137
-	.  error
-
-
-state 126
-	append_st:  Append '(' Value ',' String.')' 
+	json_st:  Json '(' String.')' 
 
 	')'  shift 138
 	.  error
 
 
-state 127
-	append_st:  Append '(' Label ',' String.')' 
+state 125
+	json_st:  Json '(' Label.')' 
+	field_st:  Label.'.' Label 
 
 	')'  shift 139
+	'.'  shift 32
+	.  error
+
+
+state 126
+	json_st:  Json '(' field_st.')' 
+	field_st:  field_st.'.' Label 
+
+	')'  shift 140
+	'.'  shift 34
+	.  error
+
+
+state 127
+	jsonstr_st:  JsonStr '(' String.')' 
+
+	')'  shift 141
 	.  error
 
 
 state 128
-	append_st:  Append '(' jsonstr_st ',' String.')' 
+	jsonstr_st:  JsonStr '(' Label.')' 
+	field_st:  Label.'.' Label 
 
-	')'  shift 140
+	')'  shift 142
+	'.'  shift 32
 	.  error
 
 
 state 129
-	json_st:  Json '(' String ')'.    (32)
+	jsonstr_st:  JsonStr '(' field_st.')' 
+	field_st:  field_st.'.' Label 
 
-	.  reduce 32 (src line 77)
+	')'  shift 143
+	'.'  shift 34
+	.  error
 
 
 state 130
-	json_st:  Json '(' Label ')'.    (33)
+	body_st:  Body String.    (64)
+
+	.  reduce 64 (src line 126)
+
+
+state 131
+	body_st:  Body json_st.    (65)
+
+	.  reduce 65 (src line 127)
+
+
+state 132
+	write_st:  Write '(' Value ',' String.')' 
+
+	')'  shift 144
+	.  error
+
+
+state 133
+	write_st:  Write '(' Label ',' String.')' 
+
+	')'  shift 145
+	.  error
+
+
+state 134
+	write_st:  Write '(' jsonstr_st ',' String.')' 
+
+	')'  shift 146
+	.  error
+
+
+state 135
+	append_st:  Append '(' Value ',' String.')' 
+
+	')'  shift 147
+	.  error
+
+
+state 136
+	append_st:  Append '(' Label ',' String.')' 
+
+	')'  shift 148
+	.  error
+
+
+state 137
+	append_st:  Append '(' jsonstr_st ',' String.')' 
+
+	')'  shift 149
+	.  error
+
+
+state 138
+	json_st:  Json '(' String ')'.    (33)
 
 	.  reduce 33 (src line 79)
 
 
-state 131
-	json_st:  Json '(' field_st ')'.    (34)
+state 139
+	json_st:  Json '(' Label ')'.    (34)
 
-	.  reduce 34 (src line 80)
+	.  reduce 34 (src line 81)
 
 
-state 132
-	jsonstr_st:  JsonStr '(' String ')'.    (35)
+state 140
+	json_st:  Json '(' field_st ')'.    (35)
 
 	.  reduce 35 (src line 82)
 
 
-state 133
-	jsonstr_st:  JsonStr '(' Label ')'.    (36)
+state 141
+	jsonstr_st:  JsonStr '(' String ')'.    (36)
 
 	.  reduce 36 (src line 84)
 
 
-state 134
-	jsonstr_st:  JsonStr '(' field_st ')'.    (37)
+state 142
+	jsonstr_st:  JsonStr '(' Label ')'.    (37)
 
-	.  reduce 37 (src line 85)
-
-
-state 135
-	write_st:  Write '(' Value ',' String ')'.    (25)
-
-	.  reduce 25 (src line 64)
+	.  reduce 37 (src line 86)
 
 
-state 136
-	write_st:  Write '(' Label ',' String ')'.    (26)
+state 143
+	jsonstr_st:  JsonStr '(' field_st ')'.    (38)
+
+	.  reduce 38 (src line 87)
+
+
+state 144
+	write_st:  Write '(' Value ',' String ')'.    (26)
 
 	.  reduce 26 (src line 66)
 
 
-state 137
-	write_st:  Write '(' jsonstr_st ',' String ')'.    (27)
+state 145
+	write_st:  Write '(' Label ',' String ')'.    (27)
 
-	.  reduce 27 (src line 67)
+	.  reduce 27 (src line 68)
 
 
-state 138
-	append_st:  Append '(' Value ',' String ')'.    (28)
+state 146
+	write_st:  Write '(' jsonstr_st ',' String ')'.    (28)
 
 	.  reduce 28 (src line 69)
 
 
-state 139
-	append_st:  Append '(' Label ',' String ')'.    (29)
+state 147
+	append_st:  Append '(' Value ',' String ')'.    (29)
 
 	.  reduce 29 (src line 71)
 
 
-state 140
-	append_st:  Append '(' jsonstr_st ',' String ')'.    (30)
+state 148
+	append_st:  Append '(' Label ',' String ')'.    (30)
 
-	.  reduce 30 (src line 72)
+	.  reduce 30 (src line 73)
 
 
-30 terminals, 19 nonterminals
-71 grammar rules, 141/16000 states
+state 149
+	append_st:  Append '(' jsonstr_st ',' String ')'.    (31)
+
+	.  reduce 31 (src line 74)
+
+
+31 terminals, 20 nonterminals
+75 grammar rules, 150/16000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
-68 working sets used
-memory: parser 68/240000
-57 extra closures
-165 shift entries, 16 exceptions
-51 goto entries
-15 entries saved by goto default
-Optimizer space used: output 174/240000
-174 table entries, 0 zero
-maximum spread: 30, maximum offset: 102
+69 working sets used
+memory: parser 74/240000
+65 extra closures
+180 shift entries, 16 exceptions
+54 goto entries
+21 entries saved by goto default
+Optimizer space used: output 188/240000
+188 table entries, 0 zero
+maximum spread: 31, maximum offset: 109
