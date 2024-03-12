@@ -34,6 +34,7 @@ expression:
     | statement
     | Comment
     | expression Comment
+    | Value
 
 statement:
     print_st

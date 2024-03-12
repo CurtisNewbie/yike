@@ -5,6 +5,7 @@ yikes - simple programming language used to learn lexer and parser.
 The lexer is hand-written, it's fairly simple and straight-forward. The parser is generated using goyacc.
 
 Supports:
+- literal string '' or ""
 - number (int64 / float64)
 - bool
 - value assignment, even for fields of an object

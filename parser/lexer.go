@@ -47,8 +47,8 @@ func (v *vm) Lex(lval *yySymType) int {
 		Debug("run for")
 		if c, ok := v.next(); ok {
 			switch {
-			case c == '\'':
-				return v.parseString(lval)
+			case c == '\'' || c == '"':
+				return v.parseString(lval, c)
 			case c == '\n' || c == ' ' || c == '\t':
 				v.move(1)
 				// TODO: maybe we should fix this? it changes the grammer
@@ -174,12 +174,12 @@ func (v *vm) remaining() string {
 	return v.script[v.offset:]
 }
 
-func (v *vm) parseString(lval *yySymType) int {
+func (v *vm) parseString(lval *yySymType, quote rune) int {
 	Debugf("parsestring, starting at: %v", v.offset)
-	i := 1 // [0] is '\''
+	i := 1 // [0] is the quote
 	for {
 		if c, ok := v.lookAheadAt(i); ok {
-			if c == '\'' {
+			if c == quote {
 				lval.val = v.script[v.offset+1 : v.offset+i]
 				Debugf("lval.val : %v, %v, %v", v.script[v.offset+1:v.offset+i], v.offset, v.offset+i)
 				v.move(i + 1)
