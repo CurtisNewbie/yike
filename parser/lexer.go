@@ -229,7 +229,7 @@ func newVm() *vm {
 	}
 }
 
-func Run(s string) {
+func Run(s string, abortOnPanic bool) {
 	yyErrorVerbose = true
 
 	start := time.Now()
@@ -240,16 +240,18 @@ func Run(s string) {
 		if l == "" {
 			continue
 		}
-		interpret(l)
+		interpret(l, abortOnPanic)
 	}
 }
 
-func interpret(s string) {
-	defer func() {
-		if e := recover(); e != nil {
-			fmt.Printf("Fatal Error: %v\n\n", e)
-		}
-	}()
+func interpret(s string, abortOnPanic bool) {
+	if !abortOnPanic {
+		defer func() {
+			if e := recover(); e != nil {
+				fmt.Printf("Fatal Error: %v\n\n", e)
+			}
+		}()
+	}
 	vmrt.script = s
 	vmrt.offset = 0
 	yyParse(vmrt)

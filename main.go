@@ -48,7 +48,7 @@ func main() {
 					println("bye")
 					return
 				}
-				parser.Run(line)
+				parser.Run(line, false)
 				print(">>> ")
 			}
 		}
@@ -59,5 +59,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	parser.Run(string(f))
+	parser.Run(string(f), true)
 }

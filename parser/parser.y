@@ -88,7 +88,6 @@ jsonstr_st:
 
 assignment:
     Label '=' eval_expr { GlobalVarWrite($1, $3.val) }
-    | Label '=' { SyntaxError() }
     | Label '=' network_st { GlobalVarWrite($1, $3.val) }
     | Label '=' json_st { GlobalVarWrite($1, $3.val) }
     | Label '=' jsonstr_st { GlobalVarWrite($1, $3.val) }
