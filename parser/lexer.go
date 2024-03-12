@@ -229,11 +229,10 @@ func newVm() *vm {
 }
 
 func Run(s string) {
-	// EnableDebug()
 	yyErrorVerbose = true
 
 	start := time.Now()
-	defer func() { Debugf("VM ran for %v, script: \n%v\n", time.Since(start), s) }()
+	defer func() { Debugf("VM ran for %v\n", time.Since(start)) }()
 	lines := strings.Split(s, "\n")
 	for _, l := range lines {
 		l = strings.TrimSpace(l)

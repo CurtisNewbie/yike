@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"yikes/parser"
@@ -9,10 +10,20 @@ import (
 	"golang.org/x/term"
 )
 
+var (
+	debug = flag.Bool("debug", false, "Enable debug mode")
+	file  = flag.String("file", "", "Script file")
+)
+
 func main() {
+	flag.Parse()
+	if *debug {
+		parser.EnableDebug()
+	}
+
 	fmt.Printf(">>> yikes %v %v \n", parser.Version, parser.Github)
 
-	if len(os.Args) < 2 || os.Args[1] == "" {
+	if *file == "" {
 		current := console.Current()
 		defer current.Reset()
 
@@ -43,8 +54,8 @@ func main() {
 		}
 	}
 
-	fmt.Printf(">>> Reading file %v\n", os.Args[1])
-	f, err := os.ReadFile(os.Args[1])
+	fmt.Printf(">>> Reading file %v\n", *file)
+	f, err := os.ReadFile(*file)
 	if err != nil {
 		panic(err)
 	}
