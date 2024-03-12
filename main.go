@@ -21,7 +21,7 @@ func main() {
 		parser.EnableDebug()
 	}
 
-	fmt.Printf(">>> yikes %v %v \n", parser.Version, parser.Github)
+	fmt.Printf("\n Welcome to yikes %v\n Github: %v \n", parser.Version, parser.Github)
 
 	if *file == "" {
 		current := console.Current()
@@ -35,7 +35,7 @@ func main() {
 			return "", 0, false
 		}
 
-		println(">>> Entered interactive mode:")
+		println("\n>>> Entering interactive mode:")
 		print(">>> ")
 		for {
 			for {

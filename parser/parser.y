@@ -56,6 +56,8 @@ print_st:
     | Print '(' ')' { println("") }
     | Print '(' field_st ')' { PrintYySym($3) }
     | Print '(' network_st ')' { PrintYySym($3) }
+    | Print '(' jsonstr_st ')' { PrintYySym($3) }
+    | Print '(' arith_st ')' { PrintYySym($3) }
 
 write_st:
     Write '(' Value ',' String ')' { WriteFile($3.val, $5.val.(string)) }
