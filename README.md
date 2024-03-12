@@ -11,7 +11,7 @@ Supports:
 - value assignment, even for fields of an object
 - `+ - * /` arithmatic operations
 - print(...) function
-- type(...) functino
+- type(...) function
 - write(string, file) function
 - append(string, file) function
 - json(...) function
