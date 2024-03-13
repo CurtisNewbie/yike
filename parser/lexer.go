@@ -9,6 +9,10 @@ import (
 	"github.com/spf13/cast"
 )
 
+const (
+	Github = "https://github.com/curtisnewbie/yikes"
+)
+
 type KwTableInf struct {
 	Kw       string
 	Type     int
