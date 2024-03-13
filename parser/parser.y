@@ -28,6 +28,7 @@ import "fmt"
 %token For
 %token Read
 %token Map
+%token Len
 
 %right '='
 %left '+' '-'
@@ -129,6 +130,7 @@ eval_expr:
     | string_st { $$ = $1 }
     | read_st { $$ = $1 }
     | map_st { $$ = $1 }
+    | len_st { $$ = $1 }
 
 header_sg:
     Header String { $$ = $2 }
@@ -178,6 +180,11 @@ for_st:
     For Number CodeBlock { RepeatBlock($2.val, $3.val) }
     | For Label CodeBlock { RepeatBlock(GlobalVarRead($2), $3.val) }
     | For field_st CodeBlock { RepeatBlock(WalkField($2.val.(string)), $3.val) }
+    | For len_st CodeBlock { RepeatBlock($2.val, $3.val) }
 
 map_st:
     Map '(' ')' { $$ = yySymType{ val: map[string]any{} } }
+
+len_st:
+    Len '(' Label ')' { $$ = yySymType{ val: CalcLen(GlobalVarRead($3)) } }
+    | Len '(' field_st ')' { $$ = yySymType{ val: CalcLen(WalkField($3.val.(string))) } }

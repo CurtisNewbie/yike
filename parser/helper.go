@@ -407,3 +407,13 @@ func RepeatBlock(n any, block any) {
 		vmrt.RunBlock(block.(BlockPos))
 	}
 }
+
+func CalcLen(v any) int {
+	if cv, ok := v.([]any); ok {
+		return len(cv)
+	}
+	if cv, ok := v.(map[string]any); ok {
+		return len(cv)
+	}
+	return 0
+}

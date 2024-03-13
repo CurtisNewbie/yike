@@ -18,6 +18,8 @@ Supports:
 - json(...) function
 - jsonstr(...) function
 - string(...) function
+- len(...) function
+- map() function (to create new map/object)
 - string concatenation `+`
 - HTTP requests, e.g.,
     - `GET 'http://localhost:80' -h 'my-header:123' -d '123'`
@@ -26,6 +28,7 @@ Supports:
     - `//...` or `#...`
     - `print('yo') // this prints yo`
 - read field values recursively using `.field` syntax.
+    - e.g., `print(myobj.name)` or `print(myobj.items.[0])`
 - basic `if var { ... }` or `if bool { ... }` statement.
 - basic `for n { ... }` statement.
 
