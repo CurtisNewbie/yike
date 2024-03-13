@@ -2,7 +2,6 @@ package parser
 
 import (
 	"fmt"
-	"strings"
 	"time"
 	"unicode"
 
@@ -34,6 +33,7 @@ var (
 		{Kw: "write", Type: Write},
 		{Kw: "append", Type: Append},
 		{Kw: "string", Type: StringFunc},
+		{Kw: "if", Type: If},
 	}
 )
 
@@ -52,8 +52,9 @@ func (v *vm) Lex(lval *yySymType) int {
 				return v.parseString(lval, c)
 			case c == '\n' || c == ' ' || c == '\t':
 				v.move(1)
-				// TODO: maybe we should fix this? it changes the grammer
 				continue
+			case c == '{':
+				return v.parseCodeBlock(lval)
 			case unicode.IsLetter(c):
 				if d, ok := v.parseKeywords(lval); ok {
 					return d
@@ -61,10 +62,8 @@ func (v *vm) Lex(lval *yySymType) int {
 				return v.parseLabel(lval)
 			case unicode.IsDigit(c):
 				return v.parseNumber(lval)
-			case c == '/' && v.lookAheadIs(1, '/'):
-				gap := len(v.script) - v.offset
-				v.move(gap)
-				return Comment
+			case (c == '/' && v.lookAheadIs(1, '/')) || c == '#':
+				return v.parseComment(lval)
 			case c == '-':
 				if v.lookAheadIs(1, 'h') { // -h
 					v.move(2)
@@ -75,19 +74,24 @@ func (v *vm) Lex(lval *yySymType) int {
 					return Body
 				}
 			default:
-				Debugf("default %v, %v", c, string(c))
+				Debugf("default %v", string(c))
 				v.move(1)
 				return int(c)
 			}
 		} else {
-			break
+			return 0
 		}
 	}
-	return 0
 }
 
 func (v *vm) Error(s string) {
-	es := fmt.Sprintf("'%v' - %v\n    %v\n    %v^", s, v.offset, v.script, strings.Repeat(" ", v.offset-1))
+	// TODO
+	// es := fmt.Sprintf("'%v' - %v\n    %v\n    %v^", s, v.offset, v.script, strings.Repeat(" ", v.offset-1))
+	start := v.offset - 10
+	if start < 0 {
+		start = 0
+	}
+	es := fmt.Sprintf("'%v' - %v\n'...%v'", s, v.offset, v.script[start:v.offset])
 	panic(es)
 }
 
@@ -122,7 +126,7 @@ func (v *vm) move(gap int) {
 }
 
 func (v *vm) parseNumber(lval *yySymType) int {
-	Debugf("parseNumber, remaining=%v", v.remaining())
+	Debugf("parseNumber, offset: %v", v.offset)
 	i := 1
 	isFloat := false
 	for {
@@ -146,12 +150,12 @@ func (v *vm) parseNumber(lval *yySymType) int {
 	}
 	Debugf("label.val: %v", lval.val)
 	v.move(i)
-	Debugf("offset: %v", v.remaining())
+	Debugf("offset: %v")
 	return Number
 }
 
 func (v *vm) parseLabel(lval *yySymType) int {
-	Debugf("parseLabel, remaining=%v", v.remaining())
+	Debugf("parseLabel, offset: %v", v.offset)
 	i := 1
 	for {
 		if c, ok := v.lookAheadAt(i); ok {
@@ -182,7 +186,7 @@ func (v *vm) parseString(lval *yySymType, quote rune) int {
 		if c, ok := v.lookAheadAt(i); ok {
 			if c == quote {
 				lval.val = v.script[v.offset+1 : v.offset+i]
-				Debugf("lval.val : %v, %v, %v", v.script[v.offset+1:v.offset+i], v.offset, v.offset+i)
+				Debugf("string lval.val : %v, %v, %v", v.script[v.offset+1:v.offset+i], v.offset, v.offset+i)
 				v.move(i + 1)
 				return String
 			}
@@ -234,14 +238,14 @@ func Run(s string, abortOnPanic bool) {
 
 	start := time.Now()
 	defer func() { Debugf("VM ran for %v\n", time.Since(start)) }()
-	lines := strings.Split(s, "\n")
-	for _, l := range lines {
-		l = strings.TrimSpace(l)
-		if l == "" {
-			continue
-		}
-		interpret(l, abortOnPanic)
-	}
+	// lines := strings.Split(s, "\n")
+	// for _, l := range lines {
+	// 	l = strings.TrimSpace(l)
+	// 	if l == "" {
+	// 		continue
+	// 	}
+	interpret(s, abortOnPanic)
+	// }
 }
 
 func interpret(s string, abortOnPanic bool) {
@@ -256,4 +260,61 @@ func interpret(s string, abortOnPanic bool) {
 	vmrt.offset = 0
 	yyParse(vmrt)
 	Debugf("vars: %#v\n", vmrt.globalvar)
+}
+
+type BlockPos struct {
+	Start int // pos of {
+	End   int // pos of }
+}
+
+func (v *vm) parseCodeBlock(yst *yySymType) int {
+	i := 1 // [0] is the quote
+	for {
+		c, ok := v.lookAheadAt(i)
+		if !ok {
+			break
+		}
+		if c == '}' {
+			yst.val = v.script[v.offset+1 : v.offset+i]
+			yst.val = BlockPos{
+				Start: v.offset,
+				End:   v.offset + i,
+			}
+			Debugf("codeblock lval.val : %#v", yst.val)
+			v.move(i + 1)
+			return CodeBlock
+		}
+		i++
+	}
+	panic(fmt.Sprintf("illegal syntax for codeblock, %#v", v))
+}
+
+func (v *vm) RunBlock(block BlockPos) {
+	original := v.script
+
+	// replace the original script, run the code block
+	vmrt.script = v.script[block.Start+1 : block.End]
+	vmrt.offset = 0
+	Debugf("RunBlock: script: %v, offset: %v", vmrt.script, vmrt.offset)
+	yyParse(vmrt)
+
+	v.script = original
+	v.offset = block.End + 1
+}
+
+func (v *vm) parseComment(lval *yySymType) int {
+	i := 1
+	for {
+		if c, ok := v.lookAheadAt(i); ok {
+			if c == '\n' {
+				break
+			}
+			i++
+		} else {
+			break
+		}
+	}
+	Debugf("Comment: '%v'", v.script[v.offset:v.offset+i])
+	v.move(i)
+	return Comment
 }

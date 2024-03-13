@@ -21,20 +21,25 @@ package parser
 %token Write
 %token Append
 %token StringFunc
+%token CodeBlock
+%token If
 
 %right '='
 %left '+' '-'
 %left '*' '/'
 
-%start expression
+%start expressions
 
 %%
+
+expressions:
+    expression
+    | expressions expression
 
 expression:
     assignment
     | statement
     | Comment
-    | expression Comment
     | Value
 
 statement:
@@ -46,6 +51,7 @@ statement:
     | field_st
     | write_st
     | append_st
+    | if_st
 
 label_st:
     Label { PrintYySymDebug($1) }
@@ -144,3 +150,8 @@ field_st:
 string_st:
     StringFunc '(' Label ')' { $$ = yySymType{ val: ToStr(GlobalVarRead($3)) } }
     | StringFunc '(' field_st ')' { $$ = yySymType{ val: ToStr(WalkField($3.val.(string))) } }
+
+if_st:
+    If Label CodeBlock { RunIfCond(GlobalVarRead($2), $3.val) }
+    | If Bool CodeBlock { RunIfCond($2.val, $3.val) }
+    | If field_st CodeBlock { RunIfCond(WalkField($2.val.(string)), $3.val) }

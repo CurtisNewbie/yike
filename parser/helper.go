@@ -351,3 +351,18 @@ func ToStr(val any) any {
 	}
 	return cast.ToString(val)
 }
+
+func RunIfCond(c any, block any) {
+	var cond bool
+
+	if v, ok := c.(map[string]any); ok {
+		cond = v != nil
+	} else if v, ok := c.(string); ok {
+		cond = v != ""
+	} else {
+		cond = cast.ToBool(c)
+	}
+	if cond {
+		vmrt.RunBlock(block.(BlockPos))
+	}
+}

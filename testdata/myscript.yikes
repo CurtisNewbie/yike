@@ -1,7 +1,3 @@
-a = 1 + 2 * 3
-print(a) // this should be 7
-a
-print()
 
 b = 1 * 2 + 3
 print(b) // this should be 5
@@ -49,3 +45,26 @@ print(obj.name + ' is okay' + '? maybe')
 
 obj.age = 123
 print(obj.age * 2 + 1)
+
+if true {
+    print("printed in true!!!")
+}
+
+if false {
+    print("shouldn't be printed")
+}
+
+cond = false
+if cond {
+    print("shouldn't be printed, because cond is false")
+}
+
+obj.cond = true
+
+if obj.cond {
+    print("obj.cond is true!!!")
+}
+
+if obj.name {
+    print("obj.name is not empty! " + obj.name)
+}

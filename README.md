@@ -22,9 +22,10 @@ Supports:
     - `GET 'http://localhost:80' -h 'my-header:123' -d '123'`
     - `GET 'http://localhost:80' -h 'my-header:123' -d json('{}')`
 - comments, e.g.,
-    - `//...`
+    - `//...` or `#...`
     - `print('yo') // this prints yo`
 - read field values recursively using `.field` syntax.
+- basic `if var { ... }` or `if bool { ... }` condition.
 
 *Sadly, this language interprets code on the fly, it won't go very far without generating an AST. But it's still a good way to learn :D*
 
