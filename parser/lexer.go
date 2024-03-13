@@ -226,7 +226,7 @@ func (v *vm) parseKeyword(lval *yySymType, keyword string, inf KwTableInf) (int,
 
 	pre := v.script[v.offset : v.offset+kwl]
 	Debugf("pre: %v", pre)
-	if pre == keyword {
+	if pre == keyword && (v.offset+kwl == len(v.script) || !unicode.IsLetter(rune(v.script[v.offset+kwl]))) {
 		if inf.Callback != nil {
 			inf.Callback(lval)
 		}
