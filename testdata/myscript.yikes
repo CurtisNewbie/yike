@@ -72,3 +72,5 @@ if obj.name {
 for 5 {
     print("repeat five times")
 }
+
+for 5 { print("repeat five times inlined") }
