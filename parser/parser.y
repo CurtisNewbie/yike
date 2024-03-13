@@ -27,6 +27,7 @@ import "fmt"
 %token If
 %token For
 %token Read
+%token Map
 
 %right '='
 %left '+' '-'
@@ -127,6 +128,7 @@ eval_expr:
     | field_st { $$ = yySymType{ val: WalkField($1.val.(string)) } }
     | string_st { $$ = $1 }
     | read_st { $$ = $1 }
+    | map_st { $$ = $1 }
 
 header_sg:
     Header String { $$ = $2 }
@@ -174,3 +176,8 @@ if_st:
 
 for_st:
     For Number CodeBlock { RepeatBlock($2.val, $3.val) }
+    | For Label CodeBlock { RepeatBlock(GlobalVarRead($2), $3.val) }
+    | For field_st CodeBlock { RepeatBlock(WalkField($2.val.(string)), $3.val) }
+
+map_st:
+    Map '(' ')' { $$ = yySymType{ val: map[string]any{} } }

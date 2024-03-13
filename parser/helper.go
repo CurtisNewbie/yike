@@ -90,7 +90,7 @@ func GlobalVarFieldWrite(expr string, val any) {
 
 	m, ok := v.(map[string]any)
 	if !ok {
-		panic("Invalid datatype")
+		panic(fmt.Sprintf("Invalid datatype for %s, it's actually %v", label, reflect.TypeOf(v)))
 	}
 
 	for i := 1; i < len(tk)-1; i++ {

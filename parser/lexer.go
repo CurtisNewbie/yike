@@ -41,6 +41,7 @@ var (
 		{Kw: "if", Type: If},
 		{Kw: "for", Type: For},
 		{Kw: "read", Type: Read},
+		{Kw: "map", Type: Map},
 	}
 )
 
