@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math"
 	"net/http"
 	"os"
 	"reflect"
@@ -359,6 +360,10 @@ func RunIfCond(c any, block any) {
 		cond = v != nil
 	} else if v, ok := c.(string); ok {
 		cond = v != ""
+	} else if v, ok := c.(int64); ok {
+		cond = v != 0
+	} else if v, ok := c.(float64); ok {
+		cond = math.Abs(v-0) > 1e-9
 	} else {
 		cond = cast.ToBool(c)
 	}
