@@ -14,6 +14,7 @@ Supports:
 - type(...) function
 - write(string, file) function
 - append(string, file) function
+- read(file) function
 - json(...) function
 - jsonstr(...) function
 - string(...) function

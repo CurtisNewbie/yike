@@ -299,6 +299,19 @@ func WriteFile(v any, file string) {
 	}
 }
 
+func ReadFile(file string) any {
+	f, err := ReadWriteFile(file)
+	if err != nil {
+		panic(fmt.Errorf("failed to open file %v, %v", file, err))
+	}
+	defer f.Close()
+	buf, err := io.ReadAll(f)
+	if err != nil {
+		panic(fmt.Errorf("failed to read file %v, %v", file, err))
+	}
+	return string(buf)
+}
+
 func AppendFile(v any, file string) {
 	f, err := AppendableFile(file)
 	if err != nil {

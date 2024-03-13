@@ -40,6 +40,7 @@ var (
 		{Kw: "string", Type: StringFunc},
 		{Kw: "if", Type: If},
 		{Kw: "for", Type: For},
+		{Kw: "read", Type: Read},
 	}
 )
 

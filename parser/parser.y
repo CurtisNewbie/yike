@@ -24,6 +24,7 @@ package parser
 %token CodeBlock
 %token If
 %token For
+%token Read
 
 %right '='
 %left '+' '-'
@@ -51,6 +52,7 @@ statement:
     | network_st
     | field_st
     | write_st
+    | read_st
     | append_st
     | if_st
     | for_st
@@ -80,6 +82,9 @@ append_st:
     Append '(' Value ',' String ')' { AppendFile($3.val, $5.val.(string)) }
     | Append '(' Label ',' String ')' { AppendFile(GlobalVarRead($3), $5.val.(string)) }
     | Append '(' jsonstr_st ',' String ')' { AppendFile($3.val, $5.val.(string)) }
+
+read_st:
+    Read '(' String ')' { $$ = yySymType{ val: ReadFile($3.val.(string)) } }
 
 type_st:
     Type '(' Label ')' { PrintType($3) }
@@ -118,6 +123,7 @@ eval_expr:
     | Bool { $$ = $1 }
     | field_st { $$ = yySymType{ val: WalkField($1.val.(string)) } }
     | string_st { $$ = $1 }
+    | read_st { $$ = $1 }
 
 
 header_sg:
