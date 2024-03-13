@@ -72,7 +72,7 @@ func (v *vm) Lex(lval *yySymType) int {
 			case (c == '/' && v.lookAheadIs(1, '/')) || c == '#':
 				return v.parseComment(lval)
 			case c == '-':
-				if v.lookAheadIs(1, 'h') { // -h
+				if v.lookAheadIs(1, 'h') || v.lookAheadIs(1, 'H') { // -h / -H
 					v.move(2)
 					return Header
 				}

@@ -202,13 +202,13 @@ func HttpSend(method string, url string, header yySymType, body yySymType) yySym
 	}
 	if harr, ok := header.val.([]string); ok {
 		for _, v := range harr {
-			tk := strings.SplitN(v, ":", 1)
+			tk := strings.SplitN(v, ":", 2)
 			if len(tk) > 1 {
 				r.Header.Add(tk[0], tk[1])
 			}
 		}
 	} else if hs, ok := header.val.(string); ok {
-		tk := strings.SplitN(hs, ":", 1)
+		tk := strings.SplitN(hs, ":", 2)
 		if len(tk) > 1 {
 			r.Header.Add(tk[0], tk[1])
 		}

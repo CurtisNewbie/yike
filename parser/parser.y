@@ -29,6 +29,7 @@ package parser
 %right '='
 %left '+' '-'
 %left '*' '/'
+%right Body Header
 
 %start expressions
 
@@ -125,19 +126,18 @@ eval_expr:
     | string_st { $$ = $1 }
     | read_st { $$ = $1 }
 
-
 header_sg:
     Header String { $$ = $2 }
 
 header_st:
     header_sg { $$ = $1 }
-    | /* empty */
-    | header_sg header_sg { $$ = joinHeaders($1, $2) }
+    | header_st header_sg { $$ = joinHeaders($1, $2) }
+    | /* empty */ { $$ = yySymType{ val : nil } }
 
 body_st:
-    /* empty */
-    | Body String { $$ = yySymType{ val: $2.val } }
+    Body String { $$ = yySymType{ val: $2.val } }
     | Body json_st { $$ = yySymType{ val: $2.val } }
+    | /* empty */ { $$ = yySymType{ val: nil } }
 
 network_st:
     Get String header_st body_st { $$ = HttpSend("GET", $2.val.(string), $3, $4) }
