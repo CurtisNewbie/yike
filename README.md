@@ -25,7 +25,8 @@ Supports:
     - `//...` or `#...`
     - `print('yo') // this prints yo`
 - read field values recursively using `.field` syntax.
-- basic `if var { ... }` or `if bool { ... }` condition.
+- basic `if var { ... }` or `if bool { ... }` statement.
+- basic `for n { ... }` statement.
 
 *Sadly, this language interprets code on the fly, it won't go very far without generating an AST. But it's still a good way to learn :D*
 

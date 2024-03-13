@@ -68,3 +68,7 @@ if obj.cond {
 if obj.name {
     print("obj.name is not empty! " + obj.name)
 }
+
+for 5 {
+    print("repeat five times")
+}

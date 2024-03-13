@@ -23,6 +23,7 @@ package parser
 %token StringFunc
 %token CodeBlock
 %token If
+%token For
 
 %right '='
 %left '+' '-'
@@ -52,6 +53,7 @@ statement:
     | write_st
     | append_st
     | if_st
+    | for_st
 
 label_st:
     Label { PrintYySymDebug($1) }
@@ -155,3 +157,6 @@ if_st:
     If Label CodeBlock { RunIfCond(GlobalVarRead($2), $3.val) }
     | If Bool CodeBlock { RunIfCond($2.val, $3.val) }
     | If field_st CodeBlock { RunIfCond(WalkField($2.val.(string)), $3.val) }
+
+for_st:
+    For Number CodeBlock { RepeatBlock($2.val, $3.val) }

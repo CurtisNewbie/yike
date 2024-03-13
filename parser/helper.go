@@ -366,3 +366,10 @@ func RunIfCond(c any, block any) {
 		vmrt.RunBlock(block.(BlockPos))
 	}
 }
+
+func RepeatBlock(n any, block any) {
+	nv := cast.ToInt(n)
+	for i := 0; i < nv; i++ {
+		vmrt.RunBlock(block.(BlockPos))
+	}
+}

@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"strings"
 	"time"
 	"unicode"
 
@@ -34,6 +35,7 @@ var (
 		{Kw: "append", Type: Append},
 		{Kw: "string", Type: StringFunc},
 		{Kw: "if", Type: If},
+		{Kw: "for", Type: For},
 	}
 )
 
@@ -238,14 +240,11 @@ func Run(s string, abortOnPanic bool) {
 
 	start := time.Now()
 	defer func() { Debugf("VM ran for %v\n", time.Since(start)) }()
-	// lines := strings.Split(s, "\n")
-	// for _, l := range lines {
-	// 	l = strings.TrimSpace(l)
-	// 	if l == "" {
-	// 		continue
-	// 	}
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return
+	}
 	interpret(s, abortOnPanic)
-	// }
 }
 
 func interpret(s string, abortOnPanic bool) {
