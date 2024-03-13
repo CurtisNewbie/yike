@@ -260,14 +260,30 @@ func WalkField(expr string) any {
 		return nil
 	}
 	v := GlobalVar()[tk[0]]
-	for i := 1; i < len(tk)-1; i++ {
-		if m, ok := v.(map[string]any); ok {
-			v = m[tk[i]]
+	for i := 1; i < len(tk); i++ {
+		curr := tk[i]
+		if strings.HasPrefix(curr, "[") {
+			if m, ok := v.([]any); ok {
+				d := cast.ToInt(curr[1 : len(curr)-1])
+				v = m[d]
+				if i == len(tk)-1 {
+					return v
+				}
+			} else {
+				return nil
+			}
 		} else {
-			return nil
+			if m, ok := v.(map[string]any); ok {
+				v = m[curr]
+				if i == len(tk)-1 {
+					return v
+				}
+			} else {
+				return nil
+			}
 		}
 	}
-	return v.(map[string]any)[tk[len(tk)-1]]
+	return nil
 }
 
 func StrToMap(v any) any {

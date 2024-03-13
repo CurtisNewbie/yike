@@ -1,6 +1,8 @@
 %{
 package parser
 
+import "fmt"
+
 %}
 
 %union{
@@ -153,6 +155,12 @@ field_st:
     }
     | field_st '.' Label {
         $$ = yySymType{ val: $1.val.(string) + "." + $3.val.(string) }
+    }
+    | Label '.' '[' Number ']' {
+        $$ = yySymType{ val: fmt.Sprintf("%s.[%d]", $1.val, $4.val) }
+    }
+    | field_st '.' '[' Number ']' {
+        $$ = yySymType{ val: fmt.Sprintf("%s.[%d]", $1.val, $4.val) }
     }
 
 string_st:
