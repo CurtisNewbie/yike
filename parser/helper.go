@@ -417,3 +417,13 @@ func CalcLen(v any) int {
 	}
 	return 0
 }
+
+func DoForEach(v any, block any) {
+	Debugf("DoForEach, %v, %v", v, block)
+	if l, ok := v.([]any); ok {
+		for i := range l {
+			GlobalVarWrite(yySymType{val: "_it"}, l[i])
+			vmrt.RunBlock(block.(BlockPos))
+		}
+	}
+}

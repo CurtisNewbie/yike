@@ -43,6 +43,7 @@ var (
 		{Kw: "read", Type: Read},
 		{Kw: "map", Type: Map},
 		{Kw: "len", Type: Len},
+		{Kw: "foreach", Type: ForEach},
 	}
 )
 
@@ -64,7 +65,7 @@ func (v *vm) Lex(lval *yySymType) int {
 				continue
 			case c == '{':
 				return v.parseCodeBlock(lval)
-			case unicode.IsLetter(c):
+			case unicode.IsLetter(c) || c == '_':
 				if d, ok := v.parseKeywords(lval); ok {
 					return d
 				}
@@ -168,7 +169,7 @@ func (v *vm) parseLabel(lval *yySymType) int {
 	i := 1
 	for {
 		if c, ok := v.lookAheadAt(i); ok {
-			if !unicode.IsLetter(c) {
+			if !unicode.IsLetter(c) && c != '_' {
 				break
 			} else {
 				i += 1
@@ -226,7 +227,7 @@ func (v *vm) parseKeyword(lval *yySymType, keyword string, inf KwTableInf) (int,
 
 	pre := v.script[v.offset : v.offset+kwl]
 	Debugf("pre: %v", pre)
-	if pre == keyword {
+	if pre == keyword && (v.offset+kwl == len(v.script) || !unicode.IsLetter(rune(v.script[v.offset+kwl]))) {
 		if inf.Callback != nil {
 			inf.Callback(lval)
 		}

@@ -31,6 +31,7 @@ Supports:
     - e.g., `print(myobj.name)` or `print(myobj.items.[0])`
 - basic `if var { ... }` or `if bool { ... }` statement.
 - basic `for n { ... }` statement.
+- basic `foreach var { print(_it) }` statement.
 
 *Sadly, this language interprets code on the fly, it won't go very far without generating an AST. But it's still a good way to learn :D*
 

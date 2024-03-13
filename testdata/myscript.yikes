@@ -74,3 +74,12 @@ for 5 {
 }
 
 for 5 { print("repeat five times inlined") }
+
+l = json('{ "val": [1,2,3]}')
+v = l.val
+h.i = "123"
+print(v)
+
+foreach l.val {
+    print(_it)
+}

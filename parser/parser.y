@@ -29,6 +29,7 @@ import "fmt"
 %token Read
 %token Map
 %token Len
+%token ForEach
 
 %right '='
 %left '+' '-'
@@ -61,6 +62,7 @@ statement:
     | append_st
     | if_st
     | for_st
+    | foreach_st
 
 label_st:
     Label { PrintYySymDebug($1) }
@@ -188,3 +190,7 @@ map_st:
 len_st:
     Len '(' Label ')' { $$ = yySymType{ val: CalcLen(GlobalVarRead($3)) } }
     | Len '(' field_st ')' { $$ = yySymType{ val: CalcLen(WalkField($3.val.(string))) } }
+
+foreach_st:
+    | ForEach Label CodeBlock { DoForEach(GlobalVarRead($2), $3.val) }
+    | ForEach field_st CodeBlock { DoForEach(WalkField($2.val.(string)), $3.val) }
