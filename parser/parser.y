@@ -126,7 +126,7 @@ eval_expr:
     | jsonstr_st { $$ = $1 }
 
 header_sg:
-    Header String { $$ = $2 }
+    Header eval_expr { $$ = $2 }
 
 header_st:
     /* empty */ { $$ = yySymType{ val : nil } }
@@ -138,11 +138,11 @@ body_st:
     | /* empty */ { $$ = yySymType{ val: nil } }
 
 network_st:
-    Get String header_st body_st { $$ = HttpSend("GET", $2.val.(string), $3, $4) }
-    | Put String header_st body_st { $$ = HttpSend("PUT", $2.val.(string), $3, $4) }
-    | Post String header_st body_st { $$ = HttpSend("POST", $2.val.(string), $3, $4) }
-    | Delete String header_st body_st { $$ = HttpSend("DELETE", $2.val.(string), $3, $4) }
-    | Head String header_st body_st { $$ = HttpSend("HEAD", $2.val.(string), $3, $4) }
+    Get eval_expr header_st { $$ = HttpSend("GET", $2.val.(string), $3, yySymType{}) }
+    | Delete eval_expr header_st { $$ = HttpSend("DELETE", $2.val.(string), $3, yySymType{}) }
+    | Head eval_expr header_st { $$ = HttpSend("HEAD", $2.val.(string), $3, yySymType{}) }
+    | Put eval_expr header_st body_st { $$ = HttpSend("PUT", $2.val.(string), $3, $4) }
+    | Post eval_expr header_st body_st { $$ = HttpSend("POST", $2.val.(string), $3, $4) }
 
 /* this is lazy, it doesn't walk the fields recursively until meeting a terminal statement */
 field_st:

@@ -22,10 +22,22 @@ func ValAdd(a any, b any) any {
 	ta := reflect.TypeOf(a)
 	tb := reflect.TypeOf(b)
 
-	if ta.Kind() == reflect.Float64 || tb.Kind() == reflect.Float64 {
+	if (a != nil && ta.Kind() == reflect.String) || (b != nil && tb.Kind() == reflect.String) {
+		var sa string
+		var sb string
+		if a != nil {
+			sa = cast.ToString(a)
+		} else {
+			sa = "nil"
+		}
+		if b != nil {
+			sb = cast.ToString(b)
+		} else {
+			sb = "nil"
+		}
+		return sa + sb
+	} else if ta.Kind() == reflect.Float64 || tb.Kind() == reflect.Float64 {
 		return cast.ToFloat64(a) + cast.ToFloat64(b)
-	} else if ta.Kind() == reflect.String || tb.Kind() == reflect.String {
-		return cast.ToString(a) + cast.ToString(b)
 	} else {
 		return a.(int64) + b.(int64)
 	}
@@ -169,7 +181,7 @@ func Debugf(s string, args ...any) {
 }
 
 func HttpSend(method string, url string, header yySymType, body yySymType) yySymType {
-	fmt.Printf("Sending '%v %v', header: %#v, body: %#v\n", method, url, header.val, body.val)
+	Debugf("Sending '%v %v', header: %#v, body: %#v\n", method, url, header.val, body.val)
 
 	var typ string
 	var br io.Reader = nil
@@ -204,12 +216,16 @@ func HttpSend(method string, url string, header yySymType, body yySymType) yySym
 		for _, v := range harr {
 			tk := strings.SplitN(v, ":", 2)
 			if len(tk) > 1 {
+				tk[0] = strings.TrimSpace(tk[0])
+				tk[1] = strings.TrimSpace(tk[1])
 				r.Header.Add(tk[0], tk[1])
 			}
 		}
 	} else if hs, ok := header.val.(string); ok {
 		tk := strings.SplitN(hs, ":", 2)
 		if len(tk) > 1 {
+			tk[0] = strings.TrimSpace(tk[0])
+			tk[1] = strings.TrimSpace(tk[1])
 			r.Header.Add(tk[0], tk[1])
 		}
 	}
