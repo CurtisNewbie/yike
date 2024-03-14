@@ -185,10 +185,6 @@ func (v *vm) parseLabel(lval *yySymType) int {
 	return Label
 }
 
-func (v *vm) remaining() string {
-	return v.script[v.offset:]
-}
-
 func (v *vm) parseString(lval *yySymType, quote rune) int {
 	Debugf("parsestring, starting at: %v", v.offset)
 	i := 1 // [0] is the quote

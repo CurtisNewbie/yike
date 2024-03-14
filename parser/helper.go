@@ -412,6 +412,7 @@ func RunIfCond(c any, block any) {
 func RepeatBlock(n any, block any) {
 	nv := cast.ToInt(n)
 	for i := 0; i < nv; i++ {
+		GlobalVarWrite(yySymType{val: "_i"}, i)
 		vmrt.RunBlock(block.(BlockPos))
 	}
 }
