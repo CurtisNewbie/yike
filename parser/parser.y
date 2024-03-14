@@ -186,5 +186,5 @@ len_st:
     | Len '(' field_st ')' { $$ = yySymType{ val: CalcLen(WalkField($3.val.(string))) } }
 
 foreach_st:
-    | ForEach Label CodeBlock { DoForEach(GlobalVarRead($2), $3.val) }
+    ForEach Label CodeBlock { DoForEach(GlobalVarRead($2), $3.val) }
     | ForEach field_st CodeBlock { DoForEach(WalkField($2.val.(string)), $3.val) }

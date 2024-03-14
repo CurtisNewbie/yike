@@ -1,22 +1,6 @@
 
-0: shift/reduce conflict (shift 18(0), red'n 89(0)) on Print
-0: shift/reduce conflict (shift 6(0), red'n 89(0)) on Label
-0: shift/reduce conflict (shift 19(0), red'n 89(0)) on Type
-0: shift/reduce conflict (shift 20(0), red'n 89(0)) on Get
-0: shift/reduce conflict (shift 21(0), red'n 89(0)) on Put
-0: shift/reduce conflict (shift 22(0), red'n 89(0)) on Post
-0: shift/reduce conflict (shift 23(0), red'n 89(0)) on Delete
-0: shift/reduce conflict (shift 24(0), red'n 89(0)) on Head
-0: shift/reduce conflict (shift 5(0), red'n 89(0)) on Comment
-0: shift/reduce conflict (shift 25(0), red'n 89(0)) on Write
-0: shift/reduce conflict (shift 27(0), red'n 89(0)) on Append
-0: shift/reduce conflict (shift 28(0), red'n 89(0)) on If
-0: shift/reduce conflict (shift 29(0), red'n 89(0)) on For
-0: shift/reduce conflict (shift 26(0), red'n 89(0)) on Read
-0: shift/reduce conflict (shift 30(0), red'n 89(0)) on ForEach
 state 0
 	$accept: .expressions $end 
-	foreach_st: .    (89)
 
 	Print  shift 18
 	Label  shift 6
@@ -33,7 +17,7 @@ state 0
 	For  shift 29
 	Read  shift 26
 	ForEach  shift 30
-	.  reduce 89 (src line 188)
+	.  error
 
 	expressions  goto 1
 	expression  goto 2
@@ -51,26 +35,9 @@ state 0
 	foreach_st  goto 17
 	field_st  goto 7
 
-1: shift/reduce conflict (shift 8191(0), red'n 89(0)) on $end
-1: shift/reduce conflict (shift 18(0), red'n 89(0)) on Print
-1: shift/reduce conflict (shift 6(0), red'n 89(0)) on Label
-1: shift/reduce conflict (shift 19(0), red'n 89(0)) on Type
-1: shift/reduce conflict (shift 20(0), red'n 89(0)) on Get
-1: shift/reduce conflict (shift 21(0), red'n 89(0)) on Put
-1: shift/reduce conflict (shift 22(0), red'n 89(0)) on Post
-1: shift/reduce conflict (shift 23(0), red'n 89(0)) on Delete
-1: shift/reduce conflict (shift 24(0), red'n 89(0)) on Head
-1: shift/reduce conflict (shift 5(0), red'n 89(0)) on Comment
-1: shift/reduce conflict (shift 25(0), red'n 89(0)) on Write
-1: shift/reduce conflict (shift 27(0), red'n 89(0)) on Append
-1: shift/reduce conflict (shift 28(0), red'n 89(0)) on If
-1: shift/reduce conflict (shift 29(0), red'n 89(0)) on For
-1: shift/reduce conflict (shift 26(0), red'n 89(0)) on Read
-1: shift/reduce conflict (shift 30(0), red'n 89(0)) on ForEach
 state 1
 	$accept:  expressions.$end 
 	expressions:  expressions.expression 
-	foreach_st: .    (89)
 
 	$end  accept
 	Print  shift 18
@@ -1097,15 +1064,15 @@ state 113
 	field_st  goto 150
 
 state 114
-	foreach_st:  ForEach Label CodeBlock.    (90)
+	foreach_st:  ForEach Label CodeBlock.    (89)
 
-	.  reduce 90 (src line 189)
+	.  reduce 89 (src line 188)
 
 
 state 115
-	foreach_st:  ForEach field_st CodeBlock.    (91)
+	foreach_st:  ForEach field_st CodeBlock.    (90)
 
-	.  reduce 91 (src line 190)
+	.  reduce 90 (src line 190)
 
 
 state 116
@@ -1711,8 +1678,8 @@ state 189
 
 
 40 terminals, 27 nonterminals
-92 grammar rules, 190/16000 states
-36 shift/reduce, 0 reduce/reduce conflicts reported
+91 grammar rules, 190/16000 states
+5 shift/reduce, 0 reduce/reduce conflicts reported
 76 working sets used
 memory: parser 135/240000
 67 extra closures
