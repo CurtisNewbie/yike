@@ -317,7 +317,7 @@ func WriteFile(v any, file string) {
 		if err != nil {
 			panic(fmt.Errorf("failed to write file %v, %v", file, err))
 		}
-		fmt.Printf("Wrote to file %v\n", file)
+		Debugf("Wrote to file %v\n", file)
 	} else {
 		panic("can only write string to file")
 	}
@@ -347,7 +347,7 @@ func AppendFile(v any, file string) {
 		if err != nil {
 			panic(fmt.Errorf("failed to write file %v, %v", file, err))
 		}
-		fmt.Printf("Appended to file %v\n", file)
+		Debugf("Appended to file %v\n", file)
 	} else {
 		panic("can only append string to file")
 	}

@@ -78,14 +78,10 @@ print_st:
     | Print '(' string_st ')' { PrintYySym($3) }
 
 write_st:
-    Write '(' Value ',' String ')' { WriteFile($3.val, $5.val.(string)) }
-    | Write '(' Label ',' String ')' { WriteFile(GlobalVarRead($3), $5.val.(string)) }
-    | Write '(' jsonstr_st ',' String ')' { WriteFile($3.val, $5.val.(string)) }
+    Write '(' eval_expr ',' String ')' { WriteFile($3.val, $5.val.(string)) }
 
 append_st:
-    Append '(' Value ',' String ')' { AppendFile($3.val, $5.val.(string)) }
-    | Append '(' Label ',' String ')' { AppendFile(GlobalVarRead($3), $5.val.(string)) }
-    | Append '(' jsonstr_st ',' String ')' { AppendFile($3.val, $5.val.(string)) }
+    Append '(' eval_expr ',' String ')' { AppendFile($3.val, $5.val.(string)) }
 
 read_st:
     Read '(' String ')' { $$ = yySymType{ val: ReadFile($3.val.(string)) } }
