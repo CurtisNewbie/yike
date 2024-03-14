@@ -741,19 +741,19 @@ yydefault:
 		yyDollar = yyS[yypt-4 : yypt+1]
 //line parser.y:100
 		{
-			yyVAL = yySymType{val: StrToMap(yyDollar[3].val)}
+			yyVAL = yySymType{val: StrToJson(yyDollar[3].val)}
 		}
 	case 40:
 		yyDollar = yyS[yypt-4 : yypt+1]
 //line parser.y:101
 		{
-			yyVAL = yySymType{val: StrToMap(GlobalVarRead(yyDollar[3]))}
+			yyVAL = yySymType{val: StrToJson(GlobalVarRead(yyDollar[3]))}
 		}
 	case 41:
 		yyDollar = yyS[yypt-4 : yypt+1]
 //line parser.y:102
 		{
-			yyVAL = yySymType{val: StrToMap(WalkField(yyDollar[3].val.(string)))}
+			yyVAL = yySymType{val: StrToJson(WalkField(yyDollar[3].val.(string)))}
 		}
 	case 42:
 		yyDollar = yyS[yypt-4 : yypt+1]

@@ -81,5 +81,9 @@ h.i = "123"
 print(v)
 
 foreach l.val {
+    print(_i)
     print(_it)
 }
+
+ll = json('[1,2,3]')
+print(ll)

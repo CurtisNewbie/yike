@@ -286,8 +286,16 @@ func WalkField(expr string) any {
 	return nil
 }
 
-func StrToMap(v any) any {
+func StrToJson(v any) any {
 	if s, ok := v.(string); ok {
+		if strings.HasPrefix(strings.TrimSpace(s), "[") {
+			var m []any
+			if err := json.Unmarshal([]byte(s), &m); err != nil {
+				panic(fmt.Sprintf("Invalid json, %v, %v", s, err))
+			}
+			return m
+		}
+
 		var m map[string]any
 		if err := json.Unmarshal([]byte(s), &m); err != nil {
 			panic(fmt.Sprintf("Invalid json, %v, %v", s, err))
@@ -422,6 +430,7 @@ func DoForEach(v any, block any) {
 	Debugf("DoForEach, %v, %v", v, block)
 	if l, ok := v.([]any); ok {
 		for i := range l {
+			GlobalVarWrite(yySymType{val: "_i"}, i)
 			GlobalVarWrite(yySymType{val: "_it"}, l[i])
 			vmrt.RunBlock(block.(BlockPos))
 		}

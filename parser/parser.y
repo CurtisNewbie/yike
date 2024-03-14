@@ -97,9 +97,9 @@ type_st:
     Type '(' Label ')' { PrintType($3) }
 
 json_st:
-    Json '(' String ')' { $$ = yySymType{ val: StrToMap($3.val) } }
-    | Json '(' Label ')' { $$ = yySymType{ val: StrToMap(GlobalVarRead($3)) } }
-    | Json '(' field_st ')' { $$ = yySymType{ val: StrToMap(WalkField($3.val.(string))) } }
+    Json '(' String ')' { $$ = yySymType{ val: StrToJson($3.val) } }
+    | Json '(' Label ')' { $$ = yySymType{ val: StrToJson(GlobalVarRead($3)) } }
+    | Json '(' field_st ')' { $$ = yySymType{ val: StrToJson(WalkField($3.val.(string))) } }
 
 jsonstr_st:
     JsonStr '(' String ')' { $$ = yySymType{ val: ToJsonStr($3.val) } }
