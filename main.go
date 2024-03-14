@@ -21,9 +21,10 @@ func main() {
 		parser.EnableDebug()
 	}
 
-	fmt.Printf("\n Welcome to yikes %v\n Github: %v \n", parser.Version, parser.Github)
-
 	if *file == "" {
+
+		fmt.Printf("\n Welcome to yikes %v\n Github: %v \n", parser.Version, parser.Github)
+
 		current := console.Current()
 		defer current.Reset()
 
@@ -54,7 +55,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf("\n>>> Reading file %v\n", *file)
+	// fmt.Printf("\n>>> Reading file %v\n", *file)
 	f, err := os.ReadFile(*file)
 	if err != nil {
 		panic(err)
