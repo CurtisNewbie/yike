@@ -34,7 +34,7 @@ import "fmt"
 %right '='
 %left '+' '-'
 %left '*' '/'
-%right Body Header
+%left Header Body
 
 %start expressions
 
@@ -54,9 +54,7 @@ statement:
     print_st
     | label_st
     | type_st
-    | arith_st
     | network_st
-    | field_st
     | write_st
     | read_st
     | append_st
@@ -121,11 +119,9 @@ arith_st:
     | eval_expr '/' eval_expr { $$ = yySymType{ val: ValDiv($1.val, $3.val) } }
 
 eval_expr:
-    Number { $$ = $1 }
-    | String { $$ = $1 }
+    Value { $$ = $1 }
     | Label { $$ = yySymType{ val: GlobalVarRead($1) } }
     | arith_st { $$ = $1 }
-    | Bool { $$ = $1 }
     | field_st { $$ = yySymType{ val: WalkField($1.val.(string)) } }
     | string_st { $$ = $1 }
     | read_st { $$ = $1 }
