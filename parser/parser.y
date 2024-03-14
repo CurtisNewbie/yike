@@ -132,9 +132,8 @@ header_sg:
     Header String { $$ = $2 }
 
 header_st:
-    header_sg { $$ = $1 }
+    /* empty */ { $$ = yySymType{ val : nil } }
     | header_st header_sg { $$ = joinHeaders($1, $2) }
-    | /* empty */ { $$ = yySymType{ val : nil } }
 
 body_st:
     Body String { $$ = yySymType{ val: $2.val } }
