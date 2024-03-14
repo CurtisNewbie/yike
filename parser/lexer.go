@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 	"unicode"
@@ -11,6 +12,10 @@ import (
 
 const (
 	Github = "https://github.com/curtisnewbie/yikes"
+)
+
+var (
+	lineBreakPat = regexp.MustCompile(`([^\\](\\n)|^\\n$)`)
 )
 
 type KwTableInf struct {
@@ -191,7 +196,13 @@ func (v *vm) parseString(lval *yySymType, quote rune) int {
 	for {
 		if c, ok := v.lookAheadAt(i); ok {
 			if c == quote {
-				lval.val = v.script[v.offset+1 : v.offset+i]
+				ss := v.script[v.offset+1 : v.offset+i]
+				lval.val = lineBreakPat.ReplaceAllStringFunc(ss, func(s string) string {
+					if len(s) == 2 {
+						return "\n"
+					}
+					return s[:len(s)-2] + "\n"
+				})
 				Debugf("string lval.val : %v, %v, %v", v.script[v.offset+1:v.offset+i], v.offset, v.offset+i)
 				v.move(i + 1)
 				return String
