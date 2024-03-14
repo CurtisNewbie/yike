@@ -110,10 +110,8 @@ assignment:
     Label '=' eval_expr { GlobalVarWrite($1, $3.val) }
     | Label '=' network_st { GlobalVarWrite($1, $3.val) }
     | Label '=' json_st { GlobalVarWrite($1, $3.val) }
-    | Label '=' jsonstr_st { GlobalVarWrite($1, $3.val) }
     | field_st '=' json_st { GlobalVarFieldWrite($1.val.(string), $3.val) }
     | field_st '=' eval_expr { GlobalVarFieldWrite($1.val.(string), $3.val) }
-    | field_st '=' jsonstr_st { GlobalVarFieldWrite($1.val.(string), $3.val) }
     | field_st '=' network_st { GlobalVarFieldWrite($1.val.(string), $3.val) }
 
 arith_st:
