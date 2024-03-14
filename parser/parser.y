@@ -133,6 +133,7 @@ eval_expr:
     | read_st { $$ = $1 }
     | map_st { $$ = $1 }
     | len_st { $$ = $1 }
+    | jsonstr_st { $$ = $1 }
 
 header_sg:
     Header String { $$ = $2 }
