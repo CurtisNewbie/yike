@@ -48,7 +48,6 @@ expression:
     assignment
     | statement
     | Comment
-    | Value
 
 statement:
     print_st
