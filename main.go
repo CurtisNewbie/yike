@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 	"yikes/parser"
 
 	"github.com/containerd/console"
@@ -12,7 +13,6 @@ import (
 
 var (
 	debug = flag.Bool("debug", false, "Enable debug mode")
-	file  = flag.String("file", "", "Script file")
 )
 
 func main() {
@@ -20,9 +20,16 @@ func main() {
 	if *debug {
 		parser.EnableDebug()
 	}
+	file := ""
+	for i := 1; i < len(os.Args); i++ {
+		s := os.Args[i]
+		if s == "-debug" {
+			continue
+		}
+		file = strings.TrimSpace(s)
+	}
 
-	if *file == "" {
-
+	if file == "" {
 		fmt.Printf("\n Welcome to yikes %v\n Github: %v \n", parser.Version, parser.Github)
 
 		current := console.Current()
@@ -56,7 +63,7 @@ func main() {
 	}
 
 	// fmt.Printf("\n>>> Reading file %v\n", *file)
-	f, err := os.ReadFile(*file)
+	f, err := os.ReadFile(file)
 	if err != nil {
 		panic(err)
 	}
