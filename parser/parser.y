@@ -97,6 +97,7 @@ json_st:
     Json '(' String ')' { $$ = yySymType{ val: StrToJson($3.val) } }
     | Json '(' Label ')' { $$ = yySymType{ val: StrToJson(GlobalVarRead($3)) } }
     | Json '(' field_st ')' { $$ = yySymType{ val: StrToJson(WalkField($3.val.(string))) } }
+    | Json '(' string_st ')' { $$ = yySymType{ val: StrToJson($3.val) } }
 
 jsonstr_st:
     JsonStr '(' String ')' { $$ = yySymType{ val: ToJsonStr($3.val) } }
