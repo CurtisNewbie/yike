@@ -3,7 +3,6 @@ package parser
 import (
 	"fmt"
 	"regexp"
-	"strings"
 	"time"
 	"unicode"
 
@@ -101,13 +100,17 @@ func (v *vm) Lex(lval *yySymType) int {
 }
 
 func (v *vm) Error(s string) {
-	// TODO
-	// es := fmt.Sprintf("'%v' - %v\n    %v\n    %v^", s, v.offset, v.script, strings.Repeat(" ", v.offset-1))
-	start := v.offset - 20
-	if start < 0 {
-		start = 0
+	row := 1
+	start := 0
+	for i := 0; i < v.offset; i++ {
+		if v.script[i] == '\n' {
+			row += 1
+			if i+1 < v.offset {
+				start = i + 1
+			}
+		}
 	}
-	es := fmt.Sprintf("'%v' - %v\n'...%v'", s, v.offset, v.script[start:v.offset])
+	es := fmt.Sprintf("'%v' - at row %d, offset %v\n  -> '%v'", s, row, v.offset, v.script[start:v.offset])
 	panic(es)
 }
 
@@ -254,10 +257,6 @@ func Run(s string, abortOnPanic bool) {
 
 	start := time.Now()
 	defer func() { Debugf("VM ran for %v\n", time.Since(start)) }()
-	s = strings.TrimSpace(s)
-	if s == "" {
-		return
-	}
 	interpret(s, abortOnPanic)
 }
 
