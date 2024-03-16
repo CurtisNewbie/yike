@@ -1,1 +1,1 @@
-go run main.go -file=testdata/myscript.yikes
+go run main.go testdata/myscript.yikes

@@ -163,10 +163,13 @@ string_st:
     StringFunc '(' Label ')' { $$ = yySymType{ val: ToStr(GlobalVarRead($3)) } }
     | StringFunc '(' field_st ')' { $$ = yySymType{ val: ToStr(WalkField($3.val.(string))) } }
 
+if_cond:
+    Label { $$ = yySymType{ val: GlobalVarRead($1) } }
+    | Bool { $$ = $1 }
+    | field_st { $$ = yySymType{ val: WalkField($1.val.(string)) } }
+
 if_st:
-    If Label CodeBlock { RunIfCond(GlobalVarRead($2), $3.val) }
-    | If Bool CodeBlock { RunIfCond($2.val, $3.val) }
-    | If field_st CodeBlock { RunIfCond(WalkField($2.val.(string)), $3.val) }
+    If if_cond CodeBlock { RunIfCond($2.val, $3.val) }
 
 for_st:
     For Number CodeBlock { RepeatBlock($2.val, $3.val) }
