@@ -406,7 +406,7 @@ func ToStr(val any) any {
 	return cast.ToString(val)
 }
 
-func RunIfCond(c any, block any) {
+func RunIfCond(c any, block any) bool {
 	var cond bool
 
 	if v, ok := c.(map[string]any); ok {
@@ -423,6 +423,7 @@ func RunIfCond(c any, block any) {
 	if cond {
 		vmrt.RunBlock(block.(BlockPos))
 	}
+	return cond
 }
 
 func RepeatBlock(n any, block any) {

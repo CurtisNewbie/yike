@@ -29,7 +29,8 @@ Supports:
     - `print('yo') // this prints yo`
 - read field values recursively using `.field` syntax.
     - e.g., `print(myobj.name)` or `print(myobj.items.[0])`
-- basic `if var { ... }` or `if bool { ... }` statement.
+- basic if-else
+    - e.g., `if var { ... } else { ... }`.
 - basic `for n { ... }` statement.
 - basic `foreach var { print(_it) }` statement.
 

@@ -44,6 +44,7 @@ var (
 		{Kw: "append", Type: Append},
 		{Kw: "string", Type: StringFunc},
 		{Kw: "if", Type: If},
+		{Kw: "else", Type: Else},
 		{Kw: "for", Type: For},
 		{Kw: "read", Type: Read},
 		{Kw: "map", Type: Map},
@@ -60,7 +61,7 @@ type vm struct {
 
 func (v *vm) Lex(lval *yySymType) int {
 	for {
-		Debug("run for")
+		// Debug("run for")
 		if c, ok := v.next(); ok {
 			switch {
 			case c == '\'' || c == '"':
@@ -102,7 +103,7 @@ func (v *vm) Lex(lval *yySymType) int {
 func (v *vm) Error(s string) {
 	// TODO
 	// es := fmt.Sprintf("'%v' - %v\n    %v\n    %v^", s, v.offset, v.script, strings.Repeat(" ", v.offset-1))
-	start := v.offset - 10
+	start := v.offset - 20
 	if start < 0 {
 		start = 0
 	}
@@ -111,7 +112,7 @@ func (v *vm) Error(s string) {
 }
 
 func (v *vm) next() (rune, bool) {
-	Debug("next")
+	// Debug("next")
 	if v.offset >= len(v.script) {
 		return 0, false
 	}
@@ -203,7 +204,7 @@ func (v *vm) parseString(lval *yySymType, quote rune) int {
 					}
 					return s[:len(s)-2] + "\n"
 				})
-				Debugf("string lval.val : %v, %v, %v", v.script[v.offset+1:v.offset+i], v.offset, v.offset+i)
+				// Debugf("string lval.val: '%v', %v, %v", v.script[v.offset+1:v.offset+i], v.offset, v.offset+i)
 				v.move(i + 1)
 				return String
 			}
@@ -225,16 +226,14 @@ func (v *vm) parseKeywords(lval *yySymType) (int, bool) {
 }
 
 func (v *vm) parseKeyword(lval *yySymType, keyword string, inf KwTableInf) (int, bool) {
-	Debugf("parseKeyword, %v, %v", keyword, inf.Type)
-
 	kwl := len(keyword)
 	if v.offset+kwl > len(v.script) {
 		return 0, false
 	}
 
 	pre := v.script[v.offset : v.offset+kwl]
-	Debugf("pre: %v", pre)
 	if pre == keyword && (v.offset+kwl == len(v.script) || !unicode.IsLetter(rune(v.script[v.offset+kwl]))) {
+		Debugf("matched: %#v", inf)
 		if inf.Callback != nil {
 			inf.Callback(lval)
 		}
@@ -294,7 +293,7 @@ func (v *vm) parseCodeBlock(yst *yySymType) int {
 				Start: v.offset,
 				End:   v.offset + i,
 			}
-			Debugf("codeblock lval.val : %#v", yst.val)
+			Debugf("parsed codeblock: '%v'", yst.val)
 			v.move(i + 1)
 			return CodeBlock
 		}
@@ -309,7 +308,7 @@ func (v *vm) RunBlock(block BlockPos) {
 	// replace the original script, run the code block
 	vmrt.script = v.script[block.Start+1 : block.End]
 	vmrt.offset = 0
-	Debugf("RunBlock: script: %v, offset: %v", vmrt.script, vmrt.offset)
+	Debugf("RunBlock: script: %v, original offset remaining: %v", vmrt.script, original[block.End+1:])
 	yyParse(vmrt)
 
 	v.script = original

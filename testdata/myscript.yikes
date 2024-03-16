@@ -52,15 +52,21 @@ print(obj.age * 2 + 1)
 
 if true {
     print("printed in true!!!")
+} else {
+    print("shouldn't be printed")
 }
 
 if false {
     print("shouldn't be printed")
+} else {
+    print("printed in else !!!!")
 }
 
 cond = false
 if cond {
     print("shouldn't be printed, because cond is false")
+} else {
+    print("cond is false")
 }
 
 obj.cond = true

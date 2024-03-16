@@ -30,6 +30,7 @@ import "fmt"
 %token Map
 %token Len
 %token ForEach
+%token Else
 
 %right '='
 %left '+' '-'
@@ -168,8 +169,12 @@ if_cond:
     | Bool { $$ = $1 }
     | field_st { $$ = yySymType{ val: WalkField($1.val.(string)) } }
 
+else_st:
+    Else CodeBlock { $$ = $2 }
+
 if_st:
-    If if_cond CodeBlock { RunIfCond($2.val, $3.val) }
+    If if_cond CodeBlock { $$ = yySymType{ val: RunIfCond($2.val, $3.val) } }
+    | if_st else_st { $$ = yySymType{ val: RunIfCond(!($1.val.(bool)), $2.val ) } }
 
 for_st:
     For Number CodeBlock { RepeatBlock($2.val, $3.val) }
