@@ -3,6 +3,7 @@ package parser
 import (
 	"fmt"
 	"regexp"
+	"strings"
 	"time"
 	"unicode"
 
@@ -252,16 +253,20 @@ func newVm() *vm {
 	}
 }
 
-func Run(s string, abortOnPanic bool) {
+func Run(s string, interactiveMode bool) {
 	yyErrorVerbose = true
 
 	start := time.Now()
 	defer func() { Debugf("VM ran for %v\n", time.Since(start)) }()
-	interpret(s, abortOnPanic)
+	interpret(s, interactiveMode)
 }
 
-func interpret(s string, abortOnPanic bool) {
-	if !abortOnPanic {
+func interpret(s string, interactiveMode bool) {
+	if interactiveMode {
+		s = strings.TrimSpace(s)
+		if s == "" {
+			return
+		}
 		defer func() {
 			if e := recover(); e != nil {
 				fmt.Printf("Fatal Error: %v\n\n", e)
