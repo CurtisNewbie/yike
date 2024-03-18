@@ -61,7 +61,6 @@ type vm struct {
 
 func (v *vm) Lex(lval *yySymType) int {
 	for {
-		// Debug("run for")
 		if c, ok := v.next(); ok {
 			switch {
 			case c == '\'' || c == '"':
@@ -89,10 +88,11 @@ func (v *vm) Lex(lval *yySymType) int {
 					v.move(2)
 					return Body
 				}
+				Debugf("default for '-' %v", string(c))
+				return v.skipOne()
 			default:
 				Debugf("default %v", string(c))
-				v.move(1)
-				return int(c)
+				return v.skipOne()
 			}
 		} else {
 			return 0
@@ -145,6 +145,12 @@ func (v *vm) move(gap int) {
 	Debugf("move %v to %v", gap, v.offset)
 }
 
+func (v *vm) skipOne() int {
+	c := v.script[v.offset]
+	v.move(1)
+	return int(c)
+}
+
 func (v *vm) parseNumber(lval *yySymType) int {
 	Debugf("parseNumber, offset: %v", v.offset)
 	i := 1
@@ -168,9 +174,9 @@ func (v *vm) parseNumber(lval *yySymType) int {
 	} else {
 		lval.val = cast.ToInt64(v.script[v.offset : v.offset+i])
 	}
-	Debugf("label.val: %v", lval.val)
+	Debugf("parseNumber -> label.val: %v", lval.val)
 	v.move(i)
-	Debugf("offset: %v")
+	Debugf("parseNumber -> offset: %v", v.offset)
 	return Number
 }
 
